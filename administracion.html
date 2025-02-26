@@ -12,6 +12,10 @@
     <div id="pregunta" class="pregunta"></div>
     <div id="opciones" class="opciones"></div>
     <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+    </div>
   </div>
   <div id="resultado" class="resultado"></div>
   <script>
@@ -26,6 +30,16 @@
         respuesta_correcta: "Ambas son correctas.",
         explicacion: "La tecnología es tanto una variable independiente como un elemento desarrollado en las organizaciones."
       },
+      {
+        pregunta: "¿Para qué sirve la organización en la administración?",
+        opciones: [
+          "Establece una estructura y define los roles.",
+          "Agrupa las actividades necesarias para alcanzar objetivos.",
+          "Ambas son correctas."
+        ],
+        respuesta_correcta: "Ambas son correctas.",
+        explicacion: "La organización establece una estructura y define los roles, además de agrupar actividades para alcanzar objetivos."
+      }
       // Añade más preguntas aquí
     ];
 
@@ -54,17 +68,27 @@
       } else {
         document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
       }
-      preguntaActual++;
-      if (preguntaActual < preguntas.length) {
-        setTimeout(mostrarPregunta, 3000); // Esperar 3 segundos antes de mostrar la siguiente pregunta
-      } else {
-        mostrarResultadoFinal();
-      }
       actualizarPuntuacion();
     }
 
     function actualizarPuntuacion() {
       document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
     }
 
     function mostrarResultadoFinal() {
