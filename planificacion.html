@@ -3,15 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proceso de Planificacion</title>
+  <title>Planificación</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body style="background: linear-gradient(135deg, #32CD32, #90EE90);">
   <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
   <div id="juego" class="juego">
     <div id="pregunta" class="pregunta"></div>
     <div id="opciones" class="opciones"></div>
     <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
   </div>
   <div id="resultado" class="resultado"></div>
   <script>
@@ -35,16 +40,6 @@
         ],
         respuesta_correcta: "Todas las anteriores.",
         explicacion: "La Ley 1178 utiliza herramientas como SPO, SOA, SICOE, TDR y ET para la planificación y gestión pública."
-      },
-      {
-        pregunta: "¿El POA es flexible o estático?",
-        opciones: [
-          "Es flexible, ya que puede adaptarse a cambios o inconvenientes durante su ejecución.",
-          "Es estático, no puede modificarse una vez aprobado.",
-          "Depende de la institución."
-        ],
-        respuesta_correcta: "Es flexible, ya que puede adaptarse a cambios o inconvenientes durante su ejecución.",
-        explicacion: "El POA (Plan Operativo Anual) es flexible y puede ajustarse según los cambios o inconvenientes que surjan durante su ejecución."
       }
       // Añade más preguntas aquí
     ];
@@ -74,17 +69,27 @@
       } else {
         document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
       }
-      preguntaActual++;
-      if (preguntaActual < preguntas.length) {
-        setTimeout(mostrarPregunta, 3000); // Esperar 3 segundos antes de mostrar la siguiente pregunta
-      } else {
-        mostrarResultadoFinal();
-      }
       actualizarPuntuacion();
     }
 
     function actualizarPuntuacion() {
       document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
     }
 
     function mostrarResultadoFinal() {
@@ -96,6 +101,10 @@
         mensaje += " - ¡Buen trabajo!";
       }
       document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
     }
 
     // Iniciar el juego al cargar la página
