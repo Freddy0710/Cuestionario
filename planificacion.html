@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proceso de Planificación</title>
+  <title>Proceso de Planificacion</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
-  <div id="animacion" class="animacion">¡Prepárate!</div>
   <div id="juego" class="juego">
     <div id="pregunta" class="pregunta"></div>
     <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
   </div>
   <div id="resultado" class="resultado"></div>
   <script>
@@ -20,10 +20,11 @@
         pregunta: "¿Cómo planifica el Estado?",
         opciones: [
           "Mediante el Plan de Desarrollo Económico y Social.",
-          "Organizando mesas de trabajo y enviando propuestas al Ministerio.",
+          "Organizando mesas de trabajo y enviando propuestas al Ministerio y la Asamblea.",
           "Ambas son correctas."
         ],
-        respuesta_correcta: "Ambas son correctas."
+        respuesta_correcta: "Ambas son correctas.",
+        explicacion: "El Estado planifica a través del Plan de Desarrollo Económico y Social, que incluye la organización de mesas de trabajo y el envío de propuestas al Ministerio y la Asamblea."
       },
       {
         pregunta: "¿Qué herramientas de la Ley 1178 utiliza?",
@@ -32,46 +33,26 @@
           "TDR, ET.",
           "Todas las anteriores."
         ],
-        respuesta_correcta: "Todas las anteriores."
+        respuesta_correcta: "Todas las anteriores.",
+        explicacion: "La Ley 1178 utiliza herramientas como SPO, SOA, SICOE, TDR y ET para la planificación y gestión pública."
       },
       {
         pregunta: "¿El POA es flexible o estático?",
         opciones: [
-          "Flexible, puede adaptarse a cambios.",
-          "Estático, no puede modificarse.",
-          "Depende de la organización."
+          "Es flexible, ya que puede adaptarse a cambios o inconvenientes durante su ejecución.",
+          "Es estático, no puede modificarse una vez aprobado.",
+          "Depende de la institución."
         ],
-        respuesta_correcta: "Flexible, puede adaptarse a cambios."
-      },
-      {
-        pregunta: "¿Cuáles son los subsistemas del SPO?",
-        opciones: [
-          "SEPOA, SSEEPOA.",
-          "SICOE, TDR.",
-          "Ninguna de las anteriores."
-        ],
-        respuesta_correcta: "SEPOA, SSEEPOA."
-      },
-      {
-        pregunta: "¿Qué es la planificación tradicional?",
-        opciones: [
-          "Un modelo rígido y secuencial.",
-          "Un modelo flexible y adaptativo.",
-          "No existe."
-        ],
-        respuesta_correcta: "Un modelo rígido y secuencial."
+        respuesta_correcta: "Es flexible, ya que puede adaptarse a cambios o inconvenientes durante su ejecución.",
+        explicacion: "El POA (Plan Operativo Anual) es flexible y puede ajustarse según los cambios o inconvenientes que surjan durante su ejecución."
       }
       // Añade más preguntas aquí
     ];
 
     let preguntaActual = 0;
     let puntuacion = 0;
-    let tiempo = 5;
-    let temporizador;
 
     function iniciarJuego() {
-      document.getElementById("animacion").style.display = "none";
-      document.getElementById("juego").style.display = "block";
       mostrarPregunta();
     }
 
@@ -82,32 +63,20 @@
         `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
       ).join("");
       document.getElementById("opciones").innerHTML = opcionesHtml;
-      iniciarTemporizador();
-    }
-
-    function iniciarTemporizador() {
-      tiempo = 5;
-      temporizador = setInterval(() => {
-        tiempo--;
-        if (tiempo <= 0) {
-          clearInterval(temporizador);
-          verificarRespuesta(null);
-        }
-      }, 1000);
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
     }
 
     function verificarRespuesta(opcion) {
-      clearInterval(temporizador);
       const pregunta = preguntas[preguntaActual];
       if (opcion === pregunta.respuesta_correcta) {
         puntuacion++;
-        document.getElementById("resultado").textContent = "¡Correcto!";
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
       } else {
-        document.getElementById("resultado").textContent = "Incorrecto :(";
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
       }
       preguntaActual++;
       if (preguntaActual < preguntas.length) {
-        setTimeout(mostrarPregunta, 2000);
+        setTimeout(mostrarPregunta, 3000); // Esperar 3 segundos antes de mostrar la siguiente pregunta
       } else {
         mostrarResultadoFinal();
       }
@@ -129,8 +98,8 @@
       document.getElementById("resultado").textContent = mensaje;
     }
 
-    // Iniciar animación y luego el juego
-    setTimeout(iniciarJuego, 2000);
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
   </script>
 </body>
 </html>
