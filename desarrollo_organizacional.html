@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desarrollo Organizacional</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #7B68EE, #9370DB); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "¿Qué es el Desarrollo Organizacional (DO)?",
+        opciones: [
+          "Proceso sistemático para mejorar la efectividad individual y organizacional mediante cambios culturales.",
+          "Solo un plan financiero.",
+          "Solo un método de control de empleados.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Proceso sistemático para mejorar la efectividad individual y organizacional mediante cambios culturales.",
+        explicacion: "El DO es un proceso sistemático que busca mejorar la efectividad individual y organizacional a través de cambios culturales."
+      },
+      {
+        pregunta: "Ejemplo de cultura organizacional",
+        opciones: [
+          "Google: Innovación, creatividad, trabajo en equipo.",
+          "Solo empresas tradicionales.",
+          "Solo empresas pequeñas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Google: Innovación, creatividad, trabajo en equipo.",
+        explicacion: "Google es un ejemplo de cultura organizacional basada en la innovación, creatividad y trabajo en equipo."
+      },
+      {
+        pregunta: "¿Qué es estrategia?",
+        opciones: [
+          "Plan a largo plazo para alcanzar objetivos.",
+          "Solo un plan financiero.",
+          "Solo un plan de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Plan a largo plazo para alcanzar objetivos.",
+        explicacion: "Una estrategia es un plan a largo plazo diseñado para alcanzar objetivos específicos."
+      },
+      {
+        pregunta: "Consultores internos y externos",
+        opciones: [
+          "Internos: Conocen la organización, pero pueden tener menos experiencia. Externos: Ofrecen una perspectiva fresca y especializada.",
+          "Ambos son lo mismo.",
+          "Internos: Ofrecen una perspectiva fresca. Externos: Conocen la organización.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Internos: Conocen la organización, pero pueden tener menos experiencia. Externos: Ofrecen una perspectiva fresca y especializada.",
+        explicacion: "Los consultores internos conocen la organización, mientras que los externos ofrecen una perspectiva fresca y especializada."
+      },
+      {
+        pregunta: "Ejemplo del área financiera",
+        opciones: [
+          "Análisis de presupuestos, control de costos, auditorías.",
+          "Solo análisis de presupuestos.",
+          "Solo control de costos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Análisis de presupuestos, control de costos, auditorías.",
+        explicacion: "El área financiera incluye análisis de presupuestos, control de costos y auditorías."
+      },
+      {
+        pregunta: "Reingeniería y benchmarking",
+        opciones: [
+          "Reingeniería: Rediseño radical de procesos. Benchmarking: Comparación con mejores prácticas.",
+          "Ambos son lo mismo.",
+          "Reingeniería: Comparación con mejores prácticas. Benchmarking: Rediseño radical de procesos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Reingeniería: Rediseño radical de procesos. Benchmarking: Comparación con mejores prácticas.",
+        explicacion: "La reingeniería implica rediseñar procesos, mientras que el benchmarking compara con mejores prácticas."
+      },
+      {
+        pregunta: "Consultor por producto",
+        opciones: [
+          "Consultor que entrega un producto específico, como un diagnóstico o propuesta.",
+          "Solo un consultor interno.",
+          "Solo un consultor externo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Consultor que entrega un producto específico, como un diagnóstico o propuesta.",
+        explicacion: "Un consultor por producto entrega resultados específicos, como diagnósticos o propuestas."
+      },
+      {
+        pregunta: "Utilidad del DO en la empresa",
+        opciones: [
+          "Mejora la confianza, comunicación, satisfacción y resolución de problemas.",
+          "Solo mejora la productividad.",
+          "Solo mejora las relaciones.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Mejora la confianza, comunicación, satisfacción y resolución de problemas.",
+        explicacion: "El DO mejora la confianza, comunicación, satisfacción y resolución de problemas en la empresa."
+      },
+      {
+        pregunta: "Nicho ecológico",
+        opciones: [
+          "Estrategias de supervivencia de una especie en un ecosistema.",
+          "Solo un concepto financiero.",
+          "Solo un concepto de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Estrategias de supervivencia de una especie en un ecosistema.",
+        explicacion: "El nicho ecológico se refiere a las estrategias de supervivencia de una especie en un ecosistema."
+      },
+      {
+        pregunta: "Etapas del DO",
+        opciones: [
+          "Diagnóstico, planificación, implementación, evaluación.",
+          "Solo diagnóstico y planificación.",
+          "Solo implementación y evaluación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Diagnóstico, planificación, implementación, evaluación.",
+        explicacion: "Las etapas del DO incluyen diagnóstico, planificación, implementación y evaluación."
+      },
+      {
+        pregunta: "Círculo de calidad",
+        opciones: [
+          "Grupo de empleados que se reúnen para identificar y resolver problemas.",
+          "Solo un grupo de gerentes.",
+          "Solo un grupo de consultores.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Grupo de empleados que se reúnen para identificar y resolver problemas.",
+        explicacion: "Un círculo de calidad es un grupo de empleados que se reúne para identificar y resolver problemas."
+      },
+      {
+        pregunta: "Diferencia entre comportamiento organizacional y DO",
+        opciones: [
+          "Comportamiento organizacional: Estudio del comportamiento. DO: Aplicación de cambios para mejorar la organización.",
+          "Ambos son lo mismo.",
+          "Comportamiento organizacional: Aplicación de cambios. DO: Estudio del comportamiento.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Comportamiento organizacional: Estudio del comportamiento. DO: Aplicación de cambios para mejorar la organización.",
+        explicacion: "El comportamiento organizacional estudia el comportamiento, mientras que el DO aplica cambios para mejorar la organización."
+      },
+      {
+        pregunta: "Características del DO",
+        opciones: [
+          "Enfoque sistémico, solución de problemas, aprendizaje experimental, retroalimentación.",
+          "Solo enfoque sistémico.",
+          "Solo solución de problemas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Enfoque sistémico, solución de problemas, aprendizaje experimental, retroalimentación.",
+        explicacion: "El DO se caracteriza por su enfoque sistémico, solución de problemas, aprendizaje experimental y retroalimentación."
+      },
+      {
+        pregunta: "Mantener el cambio",
+        opciones: [
+          "Mediante la transición y recongelamiento, revisión constante.",
+          "Solo mediante la transición.",
+          "Solo mediante el recongelamiento.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Mediante la transición y recongelamiento, revisión constante.",
+        explicacion: "Mantener el cambio requiere transición, recongelamiento y revisión constante."
+      },
+      {
+        pregunta: "Perfil del puesto en el DO",
+        opciones: [
+          "Define las responsabilidades y habilidades necesarias para un puesto.",
+          "Solo las responsabilidades.",
+          "Solo las habilidades.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Define las responsabilidades y habilidades necesarias para un puesto.",
+        explicacion: "El perfil del puesto define las responsabilidades y habilidades necesarias."
+      },
+      {
+        pregunta: "Etapa de vida para iniciar el DO",
+        opciones: [
+          "Etapa de crecimiento, donde se busca consolidar la organización.",
+          "Solo en la etapa inicial.",
+          "Solo en la etapa de declive.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Etapa de crecimiento, donde se busca consolidar la organización.",
+        explicacion: "El DO se inicia en la etapa de crecimiento, donde se busca consolidar la organización."
+      },
+      {
+        pregunta: "Consultoría",
+        opciones: [
+          "Relación de ayuda para resolver problemas o lograr cambios.",
+          "Solo un servicio de auditoría.",
+          "Solo un servicio de capacitación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Relación de ayuda para resolver problemas o lograr cambios.",
+        explicacion: "La consultoría es una relación de ayuda para resolver problemas o lograr cambios."
+      },
+      {
+        pregunta: "Intervenciones de DO",
+        opciones: [
+          "Diagnóstico, formación de equipos, retroalimentación, capacitación.",
+          "Solo diagnóstico.",
+          "Solo formación de equipos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Diagnóstico, formación de equipos, retroalimentación, capacitación.",
+        explicacion: "Las intervenciones de DO incluyen diagnóstico, formación de equipos, retroalimentación y capacitación."
+      },
+      {
+        pregunta: "Método Kaizen",
+        opciones: [
+          "Filosofía de mejora continua basada en pequeños cambios.",
+          "Solo un método de control de calidad.",
+          "Solo un método de planificación estratégica.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Filosofía de mejora continua basada en pequeños cambios.",
+        explicacion: "El método Kaizen se basa en la mejora continua mediante pequeños cambios."
+      },
+      {
+        pregunta: "Reingeniería",
+        opciones: [
+          "Rediseño radical de procesos para mejorar la competitividad.",
+          "Solo un método de control de calidad.",
+          "Solo un método de planificación estratégica.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Rediseño radical de procesos para mejorar la competitividad.",
+        explicacion: "La reingeniería implica rediseñar procesos de manera radical para mejorar la competitividad."
+      },
+      {
+        pregunta: "Tipos de análisis administrativos",
+        opciones: [
+          "Acrónico, sincrónico, diacrónico.",
+          "Solo acrónico.",
+          "Solo sincrónico.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Acrónico, sincrónico, diacrónico.",
+        explicacion: "Los tipos de análisis administrativos incluyen acrónico, sincrónico y diacrónico."
+      },
+      {
+        pregunta: "Planos que investiga el análisis administrativo",
+        opciones: [
+          "Organizativo-dinámico, funcional, estructural, comportamental.",
+          "Solo organizativo-dinámico.",
+          "Solo funcional.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Organizativo-dinámico, funcional, estructural, comportamental.",
+        explicacion: "El análisis administrativo investiga los planos organizativo-dinámico, funcional, estructural y comportamental."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
