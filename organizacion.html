@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organización</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #FF4500, #FFA07A); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "¿Para organizar, cuál es el norte que se debe seguir?",
+        opciones: [
+          "La misión, ya que define la razón de ser de la organización.",
+          "Los objetivos financieros.",
+          "Las preferencias del gerente.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "La misión, ya que define la razón de ser de la organización.",
+        explicacion: "La misión es el norte que guía la organización, ya que define su razón de ser y propósito."
+      },
+      {
+        pregunta: "Concepto de organización y diseño de estructura",
+        opciones: [
+          "Organización es un conjunto de elementos que interactúan para lograr objetivos. Diseñar es elegir la mejor solución para un problema.",
+          "Organización es solo la jerarquía de la empresa. Diseñar es crear organigramas.",
+          "No hay diferencia entre organización y diseño.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Organización es un conjunto de elementos que interactúan para lograr objetivos. Diseñar es elegir la mejor solución para un problema.",
+        explicacion: "La organización implica la interacción de elementos para lograr objetivos, mientras que el diseño busca la mejor solución a un problema."
+      },
+      {
+        pregunta: "Tipos de estructura",
+        opciones: [
+          "Funcional: Agrupación por departamentos.",
+          "Divisional: Agrupación por productos o mercados.",
+          "Matricial: Combina funciones y proyectos.",
+          "Todas las anteriores."
+        ],
+        respuesta_correcta: "Todas las anteriores.",
+        explicacion: "Los tipos de estructura incluyen funcional, divisional y matricial."
+      },
+      {
+        pregunta: "Instrumentos del proceso de organización",
+        opciones: [
+          "Análisis de puestos, Organigramas, Manuales de organización.",
+          "Solo organigramas.",
+          "Solo manuales de organización.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Análisis de puestos, Organigramas, Manuales de organización.",
+        explicacion: "Los instrumentos del proceso de organización incluyen análisis de puestos, organigramas y manuales de organización."
+      },
+      {
+        pregunta: "Niveles jerárquicos",
+        opciones: [
+          "Directivo, Ejecutivo, Asesor, Operativo.",
+          "Solo directivo y operativo.",
+          "Solo ejecutivo y asesor.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Directivo, Ejecutivo, Asesor, Operativo.",
+        explicacion: "Los niveles jerárquicos incluyen directivo, ejecutivo, asesor y operativo."
+      },
+      {
+        pregunta: "¿El proceso de organización es estático o dinámico?",
+        opciones: [
+          "Es estático, ya que establece las bases para las actividades.",
+          "Es dinámico, ya que se adapta a los cambios.",
+          "Depende de la empresa.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Es estático, ya que establece las bases para las actividades.",
+        explicacion: "El proceso de organización es estático porque establece las bases para las actividades."
+      },
+      {
+        pregunta: "Diferencia entre tramo de control estrecho y amplio",
+        opciones: [
+          "Estrecho: Menos subordinados, más control. Amplio: Más subordinados, menos control.",
+          "Estrecho: Más subordinados, menos control. Amplio: Menos subordinados, más control.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Estrecho: Menos subordinados, más control. Amplio: Más subordinados, menos control.",
+        explicacion: "El tramo de control estrecho implica menos subordinados y más control, mientras que el amplio implica más subordinados y menos control."
+      },
+      {
+        pregunta: "Autoridad lineal y funcional en el organigrama",
+        opciones: [
+          "Lineal: Autoridad directa sobre subordinados. Funcional: Autoridad sobre funciones específicas.",
+          "Lineal: Autoridad sobre funciones específicas. Funcional: Autoridad directa sobre subordinados.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Lineal: Autoridad directa sobre subordinados. Funcional: Autoridad sobre funciones específicas.",
+        explicacion: "La autoridad lineal es directa sobre subordinados, mientras que la funcional es sobre funciones específicas."
+      },
+      {
+        pregunta: "¿Qué es delegación?",
+        opciones: [
+          "Transferencia de funciones, tareas, autoridad y responsabilidad a otros.",
+          "Solo transferencia de tareas.",
+          "Solo transferencia de autoridad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Transferencia de funciones, tareas, autoridad y responsabilidad a otros.",
+        explicacion: "La delegación implica transferir funciones, tareas, autoridad y responsabilidad."
+      },
+      {
+        pregunta: "¿Qué tipo de organigrama sugiere para una empresa de construcción?",
+        opciones: [
+          "Matricial, por su dinamismo y enfoque en proyectos.",
+          "Funcional, por su estructura rígida.",
+          "Divisional, por su enfoque en productos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Matricial, por su dinamismo y enfoque en proyectos.",
+        explicacion: "El organigrama matricial es ideal para empresas de construcción debido a su dinamismo y enfoque en proyectos."
+      },
+      {
+        pregunta: "Diferencia entre organización mecanicista y orgánica",
+        opciones: [
+          "Mecanicista: Rígida y controlada. Orgánica: Flexible y adaptativa.",
+          "Mecanicista: Flexible y adaptativa. Orgánica: Rígida y controlada.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Mecanicista: Rígida y controlada. Orgánica: Flexible y adaptativa.",
+        explicacion: "La organización mecanicista es rígida y controlada, mientras que la orgánica es flexible y adaptativa."
+      },
+      {
+        pregunta: "Diferencia entre autoridad lineal y de staff",
+        opciones: [
+          "Lineal: Autoridad directa. Staff: Asesoría y apoyo.",
+          "Lineal: Asesoría y apoyo. Staff: Autoridad directa.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Lineal: Autoridad directa. Staff: Asesoría y apoyo.",
+        explicacion: "La autoridad lineal es directa, mientras que la de staff es de asesoría y apoyo."
+      },
+      {
+        pregunta: "Unidades de staff comunes",
+        opciones: [
+          "Contabilidad, jurídico, auditoría, limpieza.",
+          "Solo contabilidad y jurídico.",
+          "Solo auditoría y limpieza.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Contabilidad, jurídico, auditoría, limpieza.",
+        explicacion: "Las unidades de staff comunes incluyen contabilidad, jurídico, auditoría y limpieza."
+      },
+      {
+        pregunta: "¿Una secretaria o mensajero podrían ser parte del staff?",
+        opciones: [
+          "Sí, como unidades de apoyo.",
+          "No, solo los gerentes son parte del staff.",
+          "Depende de la empresa.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Sí, como unidades de apoyo.",
+        explicacion: "Una secretaria o mensajero pueden ser parte del staff como unidades de apoyo."
+      },
+      {
+        pregunta: "Diferencia entre unidad de mando y cadena de mando",
+        opciones: [
+          "Unidad de mando: Un solo superior. Cadena de mando: Jerarquía de supervisión.",
+          "Unidad de mando: Jerarquía de supervisión. Cadena de mando: Un solo superior.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Unidad de mando: Un solo superior. Cadena de mando: Jerarquía de supervisión.",
+        explicacion: "La unidad de mando implica un solo superior, mientras que la cadena de mando es una jerarquía de supervisión."
+      },
+      {
+        pregunta: "¿Qué tiene el gerente?",
+        opciones: [
+          "Cadena de mando y unidad de mando.",
+          "Solo cadena de mando.",
+          "Solo unidad de mando.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Cadena de mando y unidad de mando.",
+        explicacion: "El gerente tiene tanto cadena de mando como unidad de mando."
+      },
+      {
+        pregunta: "Objetivo de la departamentalización",
+        opciones: [
+          "Conocer y entender la división adecuada de funciones.",
+          "Solo conocer la estructura.",
+          "Solo entender las funciones.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Conocer y entender la división adecuada de funciones.",
+        explicacion: "El objetivo de la departamentalización es conocer y entender la división adecuada de funciones."
+      },
+      {
+        pregunta: "Factor importante en la departamentalización",
+        opciones: [
+          "División del trabajo.",
+          "Solo la jerarquía.",
+          "Solo los recursos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "División del trabajo.",
+        explicacion: "La división del trabajo es un factor importante en la departamentalización."
+      },
+      {
+        pregunta: "¿Qué es una organización?",
+        opciones: [
+          "Proceso de coordinar personas y recursos para alcanzar un propósito común.",
+          "Solo la estructura de la empresa.",
+          "Solo la jerarquía de la empresa.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Proceso de coordinar personas y recursos para alcanzar un propósito común.",
+        explicacion: "Una organización es el proceso de coordinar personas y recursos para alcanzar un propósito común."
+      },
+      {
+        pregunta: "¿Qué más se hace en una organización aparte de una estructura?",
+        opciones: [
+          "Administración de recursos y entrega de resultados.",
+          "Solo la entrega de resultados.",
+          "Solo la administración de recursos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Administración de recursos y entrega de resultados.",
+        explicacion: "Además de la estructura, una organización administra recursos y entrega resultados."
+      },
+      {
+        pregunta: "Manuales organizacionales",
+        opciones: [
+          "Manual de objetivos, políticas, empleados, capacitación, procedimientos, etc.",
+          "Solo manual de objetivos.",
+          "Solo manual de procedimientos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Manual de objetivos, políticas, empleados, capacitación, procedimientos, etc.",
+        explicacion: "Los manuales organizacionales incluyen manuales de objetivos, políticas, empleados, capacitación, procedimientos, etc."
+      },
+      {
+        pregunta: "Redes de comunicación",
+        opciones: [
+          "Formales: Estructuradas y jerárquicas. Informales: Espontáneas y basadas en relaciones personales.",
+          "Formales: Espontáneas y basadas en relaciones personales. Informales: Estructuradas y jerárquicas.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Formales: Estructuradas y jerárquicas. Informales: Espontáneas y basadas en relaciones personales.",
+        explicacion: "Las redes formales son estructuradas y jerárquicas, mientras que las informales son espontáneas y basadas en relaciones personales."
+      },
+      {
+        pregunta: "¿Qué manual hace que los individuos no sean insustituibles?",
+        opciones: [
+          "Manual de Procesos.",
+          "Manual de Objetivos.",
+          "Manual de Políticas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Manual de Procesos.",
+        explicacion: "El Manual de Procesos asegura que los individuos no sean insustituibles al estandarizar las tareas."
+      },
+      {
+        pregunta: "Importancia de la organización",
+        opciones: [
+          "Permite lograr objetivos de manera eficiente, evita duplicidad de funciones y establece la arquitectura de la empresa.",
+          "Solo evita duplicidad de funciones.",
+          "Solo establece la arquitectura de la empresa.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Permite lograr objetivos de manera eficiente, evita duplicidad de funciones y establece la arquitectura de la empresa.",
+        explicacion: "La organización es importante porque permite lograr objetivos de manera eficiente, evita duplicidad de funciones y establece la arquitectura de la empresa."
+      },
+      {
+        pregunta: "Tipos de organigramas",
+        opciones: [
+          "Por ámbito: Generales, específicos. Por contenido: Integrales, funcionales, de puestos. Por presentación: Verticales, horizontales, mixtos.",
+          "Solo por ámbito.",
+          "Solo por contenido.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Por ámbito: Generales, específicos. Por contenido: Integrales, funcionales, de puestos. Por presentación: Verticales, horizontales, mixtos.",
+        explicacion: "Los tipos de organigramas incluyen por ámbito, contenido y presentación."
+      },
+      {
+        pregunta: "Diferencia entre cargo y puesto",
+        opciones: [
+          "Cargo: Tareas específicas. Puesto: Área destinada para cumplir funciones.",
+          "Cargo: Área destinada para cumplir funciones. Puesto: Tareas específicas.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Cargo: Tareas específicas. Puesto: Área destinada para cumplir funciones.",
+        explicacion: "El cargo se refiere a tareas específicas, mientras que el puesto es el área destinada para cumplir funciones."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
