@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liderazgo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #FF8C00, #FFA500); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "Líder empresarial vs. líder de equipo",
+        opciones: [
+          "Líder empresarial: Guía desde la cima del organigrama. Líder de equipo: Guía a un grupo específico.",
+          "Ambos son lo mismo.",
+          "Líder empresarial: Guía a un grupo específico. Líder de equipo: Guía desde la cima del organigrama.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Líder empresarial: Guía desde la cima del organigrama. Líder de equipo: Guía a un grupo específico.",
+        explicacion: "El líder empresarial guía desde la cima, mientras que el líder de equipo guía a un grupo específico."
+      },
+      {
+        pregunta: "Factores que influyen en los estilos de liderazgo",
+        opciones: [
+          "Cualidades del líder, necesidades del grupo, exigencias de la situación.",
+          "Solo cualidades del líder.",
+          "Solo necesidades del grupo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Cualidades del líder, necesidades del grupo, exigencias de la situación.",
+        explicacion: "Los estilos de liderazgo dependen de las cualidades del líder, las necesidades del grupo y las exigencias de la situación."
+      },
+      {
+        pregunta: "Objetivo del liderazgo",
+        opciones: [
+          "Lograr eficiencia en el grupo para cumplir objetivos.",
+          "Solo dar órdenes.",
+          "Solo controlar a los empleados.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Lograr eficiencia en el grupo para cumplir objetivos.",
+        explicacion: "El objetivo del liderazgo es lograr eficiencia en el grupo para cumplir objetivos."
+      },
+      {
+        pregunta: "Líder carismático",
+        opciones: [
+          "Líder que inspira y motiva a otros mediante su personalidad.",
+          "Solo un líder que da órdenes.",
+          "Solo un líder que controla a los empleados.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Líder que inspira y motiva a otros mediante su personalidad.",
+        explicacion: "Un líder carismático inspira y motiva a otros mediante su personalidad."
+      },
+      {
+        pregunta: "¿El líder nace o se hace?",
+        opciones: [
+          "Ambos, algunos nacen con carisma, pero la mayoría se desarrolla con experiencia y formación.",
+          "Solo nace.",
+          "Solo se hace.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Ambos, algunos nacen con carisma, pero la mayoría se desarrolla con experiencia y formación.",
+        explicacion: "Algunos líderes nacen con carisma, pero la mayoría se desarrolla con experiencia y formación."
+      },
+      {
+        pregunta: "Tipos de poder del líder",
+        opciones: [
+          "Coercitivo, de recompensa, legítimo, de competencia, de referencia.",
+          "Solo coercitivo y de recompensa.",
+          "Solo legítimo y de competencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Coercitivo, de recompensa, legítimo, de competencia, de referencia.",
+        explicacion: "Los tipos de poder incluyen coercitivo, de recompensa, legítimo, de competencia y de referencia."
+      },
+      {
+        pregunta: "Test de estilo de liderazgo de Blake y Mouton",
+        opciones: [
+          "Evalúa el enfoque del líder en tareas y personas.",
+          "Solo evalúa el enfoque en tareas.",
+          "Solo evalúa el enfoque en personas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Evalúa el enfoque del líder en tareas y personas.",
+        explicacion: "El test de Blake y Mouton evalúa el enfoque del líder en tareas y personas."
+      },
+      {
+        pregunta: "Líder para una empresa industrial",
+        opciones: [
+          "Líder transformacional, que inspire y motive a los empleados.",
+          "Solo un líder autocrático.",
+          "Solo un líder liberal.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Líder transformacional, que inspire y motive a los empleados.",
+        explicacion: "Un líder transformacional es ideal para una empresa industrial, ya que inspira y motiva a los empleados."
+      },
+      {
+        pregunta: "Diferencia entre líder y jefe",
+        opciones: [
+          "Líder: Inspira confianza, da el ejemplo. Jefe: Ordena, inspira miedo.",
+          "Ambos son lo mismo.",
+          "Líder: Ordena, inspira miedo. Jefe: Inspira confianza, da el ejemplo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Líder: Inspira confianza, da el ejemplo. Jefe: Ordena, inspira miedo.",
+        explicacion: "Un líder inspira confianza y da el ejemplo, mientras que un jefe ordena y puede inspirar miedo."
+      },
+      {
+        pregunta: "Estilos de liderazgo en Bolivia",
+        opciones: [
+          "Depende del contexto y la cultura organizacional.",
+          "Solo autocrático.",
+          "Solo democrático.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Depende del contexto y la cultura organizacional.",
+        explicacion: "Los estilos de liderazgo en Bolivia dependen del contexto y la cultura organizacional."
+      },
+      {
+        pregunta: "Estilos de liderazgo relacionados con el tipo de organización",
+        opciones: [
+          "Sí, varían según la estructura y necesidades de la organización.",
+          "No, son los mismos en todas las organizaciones.",
+          "Solo en organizaciones públicas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Sí, varían según la estructura y necesidades de la organización.",
+        explicacion: "Los estilos de liderazgo varían según la estructura y necesidades de la organización."
+      },
+      {
+        pregunta: "Líder para una empresa minera",
+        opciones: [
+          "Líder democrático, que tome en cuenta la opinión de los trabajadores.",
+          "Solo un líder autocrático.",
+          "Solo un líder liberal.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Líder democrático, que tome en cuenta la opinión de los trabajadores.",
+        explicacion: "Un líder democrático es ideal para una empresa minera, ya que toma en cuenta la opinión de los trabajadores."
+      },
+      {
+        pregunta: "Criterios decisionales",
+        opciones: [
+          "Variables observables, información requerida, características de la decisión, acciones, resultados.",
+          "Solo variables observables.",
+          "Solo información requerida.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Variables observables, información requerida, características de la decisión, acciones, resultados.",
+        explicacion: "Los criterios decisionales incluyen variables observables, información requerida, características de la decisión, acciones y resultados."
+      },
+      {
+        pregunta: "Proceso de comunicación",
+        opciones: [
+          "Emisor, mensaje, receptor, retroalimentación.",
+          "Solo emisor y receptor.",
+          "Solo mensaje y retroalimentación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Emisor, mensaje, receptor, retroalimentación.",
+        explicacion: "El proceso de comunicación incluye emisor, mensaje, receptor y retroalimentación."
+      },
+      {
+        pregunta: "Insumo fundamental para la toma de decisiones",
+        opciones: [
+          "Información.",
+          "Solo intuición.",
+          "Solo experiencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Información.",
+        explicacion: "La información es el insumo fundamental para la toma de decisiones."
+      },
+      {
+        pregunta: "¿Quiénes hacen las cosas?",
+        opciones: [
+          "Los empleados y colaboradores.",
+          "Solo los líderes.",
+          "Solo los jefes.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Los empleados y colaboradores.",
+        explicacion: "Los empleados y colaboradores son quienes hacen las cosas en una organización."
+      },
+      {
+        pregunta: "Atributos de un líder",
+        opciones: [
+          "Carisma, compromiso, motivación, visión, capacidad intelectual.",
+          "Solo carisma y compromiso.",
+          "Solo motivación y visión.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Carisma, compromiso, motivación, visión, capacidad intelectual.",
+        explicacion: "Los atributos de un líder incluyen carisma, compromiso, motivación, visión y capacidad intelectual."
+      },
+      {
+        pregunta: "¿Se puede cambiar el estilo de liderazgo de la noche a la mañana?",
+        opciones: [
+          "No, requiere flexibilidad y adaptación gradual.",
+          "Sí, es fácil cambiarlo.",
+          "Solo en algunos casos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "No, requiere flexibilidad y adaptación gradual.",
+        explicacion: "Cambiar el estilo de liderazgo requiere flexibilidad y adaptación gradual."
+      },
+      {
+        pregunta: "Liderazgo tradicional",
+        opciones: [
+          "Basado en la autoridad heredada o por costumbre.",
+          "Solo basado en la autoridad formal.",
+          "Solo basado en la autoridad carismática.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Basado en la autoridad heredada o por costumbre.",
+        explicacion: "El liderazgo tradicional se basa en la autoridad heredada o por costumbre."
+      },
+      {
+        pregunta: "Empowerment",
+        opciones: [
+          "Delegación de autoridad y responsabilidad a los empleados.",
+          "Solo delegación de autoridad.",
+          "Solo delegación de responsabilidad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Delegación de autoridad y responsabilidad a los empleados.",
+        explicacion: "El empowerment implica delegar autoridad y responsabilidad a los empleados."
+      },
+      {
+        pregunta: "Diferencia entre líder en organización pública y privada",
+        opciones: [
+          "Pública: Enfocado en políticas y restricciones burocráticas. Privada: Enfocado en resultados y competitividad.",
+          "Ambos son lo mismo.",
+          "Pública: Enfocado en resultados. Privada: Enfocado en políticas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Pública: Enfocado en políticas y restricciones burocráticas. Privada: Enfocado en resultados y competitividad.",
+        explicacion: "En organizaciones públicas, el líder se enfoca en políticas y restricciones burocráticas, mientras que en organizaciones privadas se enfoca en resultados y competitividad."
+      },
+      {
+        pregunta: "Cómo motivar a un equipo",
+        opciones: [
+          "Cuidar el ambiente de trabajo, incentivar, comunicar, ser flexible.",
+          "Solo cuidar el ambiente de trabajo.",
+          "Solo incentivar.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Cuidar el ambiente de trabajo, incentivar, comunicar, ser flexible.",
+        explicacion: "Para motivar a un equipo, es importante cuidar el ambiente de trabajo, incentivar, comunicar y ser flexible."
+      },
+      {
+        pregunta: "Diferencia entre poder y autoridad",
+        opciones: [
+          "Poder: Capacidad de controlar. Autoridad: Influencia para que otros hagan algo voluntariamente.",
+          "Ambos son lo mismo.",
+          "Poder: Influencia para que otros hagan algo voluntariamente. Autoridad: Capacidad de controlar.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Poder: Capacidad de controlar. Autoridad: Influencia para que otros hagan algo voluntariamente.",
+        explicacion: "El poder es la capacidad de controlar, mientras que la autoridad es la influencia para que otros hagan algo voluntariamente."
+      },
+      {
+        pregunta: "Tipos de liderazgo",
+        opciones: [
+          "Autocrático, democrático, liberal, transformacional, transaccional.",
+          "Solo autocrático y democrático.",
+          "Solo transformacional y transaccional.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Autocrático, democrático, liberal, transformacional, transaccional.",
+        explicacion: "Los tipos de liderazgo incluyen autocrático, democrático, liberal, transformacional y transaccional."
+      },
+      {
+        pregunta: "Perfil de un líder",
+        opciones: [
+          "Carácter, carisma, compromiso, comunicación, capacidad.",
+          "Solo carácter y carisma.",
+          "Solo compromiso y comunicación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Carácter, carisma, compromiso, comunicación, capacidad.",
+        explicacion: "El perfil de un líder incluye carácter, carisma, compromiso, comunicación y capacidad."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
