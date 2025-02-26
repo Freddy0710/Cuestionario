@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dirección</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #8A2BE2, #BA55D3); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "¿Qué es decisión y toma de decisiones?",
+        opciones: [
+          "Decisión: Resultado de un proceso mental. Toma de decisiones: Selección de una línea de acción entre alternativas.",
+          "Decisión: Selección de una línea de acción. Toma de decisiones: Resultado de un proceso mental.",
+          "Ambas son lo mismo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Decisión: Resultado de un proceso mental. Toma de decisiones: Selección de una línea de acción entre alternativas.",
+        explicacion: "Una decisión es el resultado de un proceso mental, mientras que la toma de decisiones implica seleccionar una línea de acción entre varias alternativas."
+      },
+      {
+        pregunta: "¿Qué es autorrealización?",
+        opciones: [
+          "Impulso por alcanzar el máximo potencial personal.",
+          "Solo cumplir metas laborales.",
+          "Solo cumplir metas personales.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Impulso por alcanzar el máximo potencial personal.",
+        explicacion: "La autorrealización es el impulso por alcanzar el máximo potencial personal en todos los aspectos de la vida."
+      },
+      {
+        pregunta: "Herramientas para mejorar decisiones",
+        opciones: [
+          "Modelos de toma de decisiones, FODA, análisis de costos y beneficios.",
+          "Solo FODA.",
+          "Solo análisis de costos y beneficios.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Modelos de toma de decisiones, FODA, análisis de costos y beneficios.",
+        explicacion: "Las herramientas para mejorar decisiones incluyen modelos de toma de decisiones, FODA y análisis de costos y beneficios."
+      },
+      {
+        pregunta: "¿Conoces sobre la herramienta del FODA?",
+        opciones: [
+          "Sí, es un análisis de Fortalezas, Debilidades, Oportunidades y Amenazas para formular estrategias.",
+          "No, es solo un análisis financiero.",
+          "Es una herramienta para medir la productividad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Sí, es un análisis de Fortalezas, Debilidades, Oportunidades y Amenazas para formular estrategias.",
+        explicacion: "El FODA es una herramienta que analiza Fortalezas, Debilidades, Oportunidades y Amenazas para formular estrategias."
+      },
+      {
+        pregunta: "Barreras de comunicación en aulas",
+        opciones: [
+          "Semánticas, físicas, fisiológicas, psicológicas.",
+          "Solo semánticas y físicas.",
+          "Solo fisiológicas y psicológicas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Semánticas, físicas, fisiológicas, psicológicas.",
+        explicacion: "Las barreras de comunicación en aulas incluyen semánticas, físicas, fisiológicas y psicológicas."
+      },
+      {
+        pregunta: "¿Qué es la racionalidad limitada?",
+        opciones: [
+          "Concepto de Herbert Simon que explica que las decisiones se toman con información limitada.",
+          "Es tomar decisiones sin información.",
+          "Es tomar decisiones basadas solo en emociones.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Concepto de Herbert Simon que explica que las decisiones se toman con información limitada.",
+        explicacion: "La racionalidad limitada es un concepto de Herbert Simon que explica que las decisiones se toman con información limitada."
+      },
+      {
+        pregunta: "Toma de decisiones sistémica y no sistémica",
+        opciones: [
+          "Sistémica: Nivel estratégico. No sistémica: Nivel operativo.",
+          "Sistémica: Nivel operativo. No sistémica: Nivel estratégico.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Sistémica: Nivel estratégico. No sistémica: Nivel operativo.",
+        explicacion: "La toma de decisiones sistémica se refiere al nivel estratégico, mientras que la no sistémica se refiere al nivel operativo."
+      },
+      {
+        pregunta: "¿Es necesario cumplir un orden en la pirámide de Maslow?",
+        opciones: [
+          "Sí, las necesidades básicas deben satisfacerse antes de las superiores.",
+          "No, las necesidades pueden satisfacerse en cualquier orden.",
+          "Depende de la persona.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Sí, las necesidades básicas deben satisfacerse antes de las superiores.",
+        explicacion: "En la pirámide de Maslow, las necesidades básicas deben satisfacerse antes de las superiores."
+      },
+      {
+        pregunta: "Niveles organizacionales",
+        opciones: [
+          "Institucional, Intermedio, Operativo.",
+          "Solo institucional y operativo.",
+          "Solo intermedio y operativo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Institucional, Intermedio, Operativo.",
+        explicacion: "Los niveles organizacionales incluyen institucional, intermedio y operativo."
+      },
+      {
+        pregunta: "Niveles de Maslow aplicados a un gerente",
+        opciones: [
+          "Autorrealización, por su enfoque en habilidades conceptuales.",
+          "Solo necesidades fisiológicas.",
+          "Solo necesidades de seguridad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Autorrealización, por su enfoque en habilidades conceptuales.",
+        explicacion: "Los gerentes suelen enfocarse en la autorrealización, ya que buscan maximizar su potencial y habilidades conceptuales."
+      },
+      {
+        pregunta: "Perfil de un líder",
+        opciones: [
+          "Conocimientos técnicos, conceptuales y competencias personales.",
+          "Solo conocimientos técnicos.",
+          "Solo competencias personales.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Conocimientos técnicos, conceptuales y competencias personales.",
+        explicacion: "El perfil de un líder incluye conocimientos técnicos, conceptuales y competencias personales."
+      },
+      {
+        pregunta: "¿Qué es el liderazgo carismático?",
+        opciones: [
+          "Liderazgo basado en la personalidad y capacidad de inspirar a otros.",
+          "Liderazgo basado en la autoridad formal.",
+          "Liderazgo basado en la estructura organizacional.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Liderazgo basado en la personalidad y capacidad de inspirar a otros.",
+        explicacion: "El liderazgo carismático se basa en la personalidad y la capacidad de inspirar a otros."
+      },
+      {
+        pregunta: "Ejemplo de salir de la zona de confort",
+        opciones: [
+          "Cambiar de trabajo o asumir nuevas responsabilidades.",
+          "Solo cambiar de trabajo.",
+          "Solo asumir nuevas responsabilidades.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Cambiar de trabajo o asumir nuevas responsabilidades.",
+        explicacion: "Salir de la zona de confort implica cambiar de trabajo o asumir nuevas responsabilidades."
+      },
+      {
+        pregunta: "Limitaciones al salir de la zona de confort",
+        opciones: [
+          "Tiempo y restricciones de comportamiento.",
+          "Solo tiempo.",
+          "Solo restricciones de comportamiento.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Tiempo y restricciones de comportamiento.",
+        explicacion: "Las limitaciones al salir de la zona de confort incluyen tiempo y restricciones de comportamiento."
+      },
+      {
+        pregunta: "¿Qué es el riesgo?",
+        opciones: [
+          "Probabilidad de que ocurra un daño o contratiempo.",
+          "Solo un daño.",
+          "Solo un contratiempo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Probabilidad de que ocurra un daño o contratiempo.",
+        explicacion: "El riesgo es la probabilidad de que ocurra un daño o contratiempo."
+      },
+      {
+        pregunta: "Porcentajes de comunicación verbal y no verbal",
+        opciones: [
+          "Verbal: 7%. Vocal: 38%. No verbal: 55%.",
+          "Verbal: 55%. Vocal: 38%. No verbal: 7%.",
+          "Verbal: 38%. Vocal: 7%. No verbal: 55%.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Verbal: 7%. Vocal: 38%. No verbal: 55%.",
+        explicacion: "La comunicación verbal representa el 7%, la vocal el 38% y la no verbal el 55%."
+      },
+      {
+        pregunta: "¿Qué es la actitud?",
+        opciones: [
+          "Enunciados de evaluación favorables o desfavorables hacia objetos, personas o situaciones.",
+          "Solo emociones positivas.",
+          "Solo emociones negativas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Enunciados de evaluación favorables o desfavorables hacia objetos, personas o situaciones.",
+        explicacion: "La actitud son enunciados de evaluación favorables o desfavorables hacia objetos, personas o situaciones."
+      },
+      {
+        pregunta: "¿Los estilos de liderazgo están relacionados con el tipo de organización?",
+        opciones: [
+          "Sí, varían según las necesidades y estructura de la organización.",
+          "No, son independientes del tipo de organización.",
+          "Depende del líder.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Sí, varían según las necesidades y estructura de la organización.",
+        explicacion: "Los estilos de liderazgo varían según las necesidades y estructura de la organización."
+      },
+      {
+        pregunta: "Estilo de liderazgo para una empresa minera",
+        opciones: [
+          "Liderazgo transformacional.",
+          "Liderazgo autocrático.",
+          "Liderazgo laissez-faire.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Liderazgo transformacional.",
+        explicacion: "El liderazgo transformacional es ideal para una empresa minera debido a su enfoque en la innovación y la motivación."
+      },
+      {
+        pregunta: "¿Qué son los criterios decisionales?",
+        opciones: [
+          "Bases para tomar decisiones, como el análisis de costos y beneficios.",
+          "Solo el análisis de costos.",
+          "Solo el análisis de beneficios.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Bases para tomar decisiones, como el análisis de costos y beneficios.",
+        explicacion: "Los criterios decisionales son bases para tomar decisiones, como el análisis de costos y beneficios."
+      },
+      {
+        pregunta: "Insumo fundamental para la toma de decisiones",
+        opciones: [
+          "Información.",
+          "Solo recursos financieros.",
+          "Solo recursos humanos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Información.",
+        explicacion: "El insumo fundamental para la toma de decisiones es la información."
+      },
+      {
+        pregunta: "Necesidades fisiológicas",
+        opciones: [
+          "Hambre, sed, sueño, actividad, sexo.",
+          "Solo hambre y sed.",
+          "Solo sueño y actividad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Hambre, sed, sueño, actividad, sexo.",
+        explicacion: "Las necesidades fisiológicas incluyen hambre, sed, sueño, actividad y sexo."
+      },
+      {
+        pregunta: "¿Quiénes hacen las cosas?",
+        opciones: [
+          "Los empleados y colaboradores.",
+          "Solo los gerentes.",
+          "Solo los líderes.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Los empleados y colaboradores.",
+        explicacion: "Los empleados y colaboradores son quienes hacen las cosas en una organización."
+      },
+      {
+        pregunta: "¿Se puede cambiar el estilo de liderazgo de la noche a la mañana?",
+        opciones: [
+          "No, requiere flexibilidad, diagnóstico y consenso con los colaboradores.",
+          "Sí, es fácil cambiar de estilo.",
+          "Depende del líder.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "No, requiere flexibilidad, diagnóstico y consenso con los colaboradores.",
+        explicacion: "Cambiar el estilo de liderazgo requiere flexibilidad, diagnóstico y consenso con los colaboradores."
+      },
+      {
+        pregunta: "Diferencia entre implantar e implantación",
+        opciones: [
+          "Implantar: Definir y diseñar. Implantación: Aplicación práctica.",
+          "Implantar: Aplicación práctica. Implantación: Definir y diseñar.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Implantar: Definir y diseñar. Implantación: Aplicación práctica.",
+        explicacion: "Implantar se refiere a definir y diseñar, mientras que la implantación es la aplicación práctica."
+      },
+      {
+        pregunta: "¿Dirección es lo mismo que liderazgo?",
+        opciones: [
+          "Dirección: Aplicación de conocimientos en la toma de decisiones. Liderazgo: Influir en un grupo para alcanzar objetivos.",
+          "Sí, son lo mismo.",
+          "No, no tienen relación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Dirección: Aplicación de conocimientos en la toma de decisiones. Liderazgo: Influir en un grupo para alcanzar objetivos.",
+        explicacion: "La dirección implica la aplicación de conocimientos en la toma de decisiones, mientras que el liderazgo implica influir en un grupo para alcanzar objetivos."
+      },
+      {
+        pregunta: "¿Qué es la teoría Z?",
+        opciones: [
+          "Enfoque japonés que integra la vida laboral y personal, fomentando el trabajo en equipo y la confianza.",
+          "Teoría que solo se enfoca en la productividad.",
+          "Teoría que solo se enfoca en la jerarquía.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Enfoque japonés que integra la vida laboral y personal, fomentando el trabajo en equipo y la confianza.",
+        explicacion: "La teoría Z es un enfoque japonés que integra la vida laboral y personal, fomentando el trabajo en equipo y la confianza."
+      },
+      {
+        pregunta: "Fórmula de la satisfacción",
+        opciones: [
+          "No hay una fórmula específica, pero se mide mediante indicadores de desempeño.",
+          "Satisfacción = Productividad / Recursos.",
+          "Satisfacción = Empleados felices.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "No hay una fórmula específica, pero se mide mediante indicadores de desempeño.",
+        explicacion: "No existe una fórmula específica para la satisfacción, pero se mide mediante indicadores de desempeño."
+      },
+      {
+        pregunta: "Tipos de motivación",
+        opciones: [
+          "Extrínseca, intrínseca, trascendente.",
+          "Solo extrínseca.",
+          "Solo intrínseca.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Extrínseca, intrínseca, trascendente.",
+        explicacion: "Los tipos de motivación incluyen extrínseca, intrínseca y trascendente."
+      },
+      {
+        pregunta: "¿Cómo se mide el desempeño?",
+        opciones: [
+          "Comparando resultados con metas y objetivos establecidos.",
+          "Solo mediante la productividad.",
+          "Solo mediante la satisfacción del cliente.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Comparando resultados con metas y objetivos establecidos.",
+        explicacion: "El desempeño se mide comparando resultados con metas y objetivos establecidos."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
