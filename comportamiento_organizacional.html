@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comportamiento Organizacional</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #FF69B4, #FFB6C1); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "¿Qué es comportamiento organizacional?",
+        opciones: [
+          "Estudio del impacto de individuos, grupos y estructuras en el comportamiento dentro de las organizaciones.",
+          "Solo el estudio de la estructura organizacional.",
+          "Solo el análisis de la productividad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Estudio del impacto de individuos, grupos y estructuras en el comportamiento dentro de las organizaciones.",
+        explicacion: "El comportamiento organizacional estudia cómo las personas, grupos y estructuras influyen en el comportamiento dentro de las organizaciones."
+      },
+      {
+        pregunta: "Elementos del comportamiento organizacional",
+        opciones: [
+          "Personas, estructuras, tecnología, entorno.",
+          "Solo personas y estructuras.",
+          "Solo tecnología y entorno.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Personas, estructuras, tecnología, entorno.",
+        explicacion: "Los elementos clave del comportamiento organizacional son las personas, las estructuras, la tecnología y el entorno."
+      },
+      {
+        pregunta: "Objetivos del comportamiento organizacional",
+        opciones: [
+          "Describir, comprender, predecir y controlar el comportamiento.",
+          "Solo describir y comprender.",
+          "Solo predecir y controlar.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Describir, comprender, predecir y controlar el comportamiento.",
+        explicacion: "Los objetivos del comportamiento organizacional incluyen describir, comprender, predecir y controlar el comportamiento."
+      },
+      {
+        pregunta: "Influencia del comportamiento organizacional en el liderazgo",
+        opciones: [
+          "El líder debe conocer a sus colaboradores para influir en su comportamiento.",
+          "Solo el líder debe dar órdenes.",
+          "Solo el líder debe controlar a los empleados.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "El líder debe conocer a sus colaboradores para influir en su comportamiento.",
+        explicacion: "El comportamiento organizacional ayuda al líder a entender a sus colaboradores y a influir en su comportamiento."
+      },
+      {
+        pregunta: "Teoría X e Y de McGregor",
+        opciones: [
+          "Teoría X: Los empleados son perezosos y necesitan ser controlados. Teoría Y: Los empleados son motivados y responsables.",
+          "Ambas teorías son iguales.",
+          "Teoría X: Los empleados son motivados. Teoría Y: Los empleados son perezosos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Teoría X: Los empleados son perezosos y necesitan ser controlados. Teoría Y: Los empleados son motivados y responsables.",
+        explicacion: "La Teoría X asume que los empleados son perezosos, mientras que la Teoría Y asume que son motivados y responsables."
+      },
+      {
+        pregunta: "Cultura organizacional",
+        opciones: [
+          "Sistema de creencias y valores compartidos que guían el comportamiento en una organización.",
+          "Solo las normas escritas de la organización.",
+          "Solo el ambiente físico de la organización.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Sistema de creencias y valores compartidos que guían el comportamiento en una organización.",
+        explicacion: "La cultura organizacional son los valores y creencias compartidos que guían el comportamiento."
+      },
+      {
+        pregunta: "Diferencia entre ambiente y cultura",
+        opciones: [
+          "Ambiente: Factores externos que afectan a la organización. Cultura: Valores y normas internas.",
+          "Ambos son lo mismo.",
+          "Ambiente: Valores internos. Cultura: Factores externos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Ambiente: Factores externos que afectan a la organización. Cultura: Valores y normas internas.",
+        explicacion: "El ambiente se refiere a factores externos, mientras que la cultura se refiere a valores y normas internas."
+      },
+      {
+        pregunta: "Herramientas para predecir actitudes",
+        opciones: [
+          "Encuestas, entrevistas, observación.",
+          "Solo encuestas.",
+          "Solo entrevistas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Encuestas, entrevistas, observación.",
+        explicacion: "Las encuestas, entrevistas y observación son herramientas para predecir actitudes."
+      },
+      {
+        pregunta: "Relación del comportamiento organizacional con otras ciencias",
+        opciones: [
+          "Psicología, sociología, antropología.",
+          "Solo psicología.",
+          "Solo sociología.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Psicología, sociología, antropología.",
+        explicacion: "El comportamiento organizacional se relaciona con la psicología, sociología y antropología."
+      },
+      {
+        pregunta: "Teoría U de Otto Scharmer",
+        opciones: [
+          "Método de desarrollo personal que fomenta la innovación y el cambio.",
+          "Solo un método de control de empleados.",
+          "Solo un método de planificación estratégica.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Método de desarrollo personal que fomenta la innovación y el cambio.",
+        explicacion: "La Teoría U es un método que fomenta la innovación y el cambio a través del desarrollo personal."
+      },
+      {
+        pregunta: "Herramientas para medir la satisfacción estudiantil",
+        opciones: [
+          "Encuestas de satisfacción, escalas de actitudes.",
+          "Solo encuestas de satisfacción.",
+          "Solo escalas de actitudes.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Encuestas de satisfacción, escalas de actitudes.",
+        explicacion: "Las encuestas de satisfacción y las escalas de actitudes son herramientas para medir la satisfacción estudiantil."
+      },
+      {
+        pregunta: "Diseño de una intervención para mejorar la satisfacción estudiantil",
+        opciones: [
+          "Establecer buenas relaciones entre estudiantes y docentes.",
+          "Solo aumentar las calificaciones.",
+          "Solo reducir la carga académica.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Establecer buenas relaciones entre estudiantes y docentes.",
+        explicacion: "Una intervención efectiva incluye mejorar las relaciones entre estudiantes y docentes."
+      },
+      {
+        pregunta: "Aspectos organizacionales que conciernen al comportamiento organizacional",
+        opciones: [
+          "Estructura, cultura, clima organizacional.",
+          "Solo estructura.",
+          "Solo cultura.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Estructura, cultura, clima organizacional.",
+        explicacion: "El comportamiento organizacional se preocupa por la estructura, cultura y clima organizacional."
+      },
+      {
+        pregunta: "¿Qué es el clima organizacional?",
+        opciones: [
+          "Ambiente existente entre los miembros de la organización.",
+          "Solo el ambiente físico de la organización.",
+          "Solo las normas escritas de la organización.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Ambiente existente entre los miembros de la organización.",
+        explicacion: "El clima organizacional es el ambiente percibido entre los miembros de la organización."
+      },
+      {
+        pregunta: "Perfil de un líder",
+        opciones: [
+          "Conocimientos técnicos, conceptuales, competencias personales.",
+          "Solo conocimientos técnicos.",
+          "Solo competencias personales.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Conocimientos técnicos, conceptuales, competencias personales.",
+        explicacion: "Un líder debe tener conocimientos técnicos, conceptuales y competencias personales."
+      },
+      {
+        pregunta: "Diferencia entre actitud y aptitud",
+        opciones: [
+          "Actitud: Evaluación favorable o desfavorable hacia algo. Aptitud: Capacidad para realizar tareas.",
+          "Ambos son lo mismo.",
+          "Actitud: Capacidad para realizar tareas. Aptitud: Evaluación favorable o desfavorable.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Actitud: Evaluación favorable o desfavorable hacia algo. Aptitud: Capacidad para realizar tareas.",
+        explicacion: "La actitud es una evaluación, mientras que la aptitud es una capacidad."
+      },
+      {
+        pregunta: "Importancia del comportamiento organizacional",
+        opciones: [
+          "Mejora el ambiente laboral, la productividad y las relaciones.",
+          "Solo mejora la productividad.",
+          "Solo mejora las relaciones.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Mejora el ambiente laboral, la productividad y las relaciones.",
+        explicacion: "El comportamiento organizacional mejora el ambiente laboral, la productividad y las relaciones."
+      },
+      {
+        pregunta: "Variables que inciden en el comportamiento organizacional",
+        opciones: [
+          "Dependientes: Productividad, ausentismo, rotación. Independientes: Personalidad, aprendizaje, actitudes, liderazgo.",
+          "Solo variables dependientes.",
+          "Solo variables independientes.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Dependientes: Productividad, ausentismo, rotación. Independientes: Personalidad, aprendizaje, actitudes, liderazgo.",
+        explicacion: "Las variables dependientes incluyen productividad, ausentismo y rotación, mientras que las independientes incluyen personalidad, aprendizaje, actitudes y liderazgo."
+      },
+      {
+        pregunta: "Finalidad del comportamiento organizacional",
+        opciones: [
+          "Mejorar la eficacia de la organización.",
+          "Solo mejorar la productividad.",
+          "Solo mejorar las relaciones.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Mejorar la eficacia de la organización.",
+        explicacion: "El comportamiento organizacional busca mejorar la eficacia de la organización."
+      },
+      {
+        pregunta: "Teoría de Vroom y teoría de equidad",
+        opciones: [
+          "Vroom: Motivación = Valencia + Expectativa + Instrumentalidad. Equidad: Comparación de recompensas con otros.",
+          "Ambas teorías son iguales.",
+          "Vroom: Comparación de recompensas. Equidad: Motivación = Valencia + Expectativa.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Vroom: Motivación = Valencia + Expectativa + Instrumentalidad. Equidad: Comparación de recompensas con otros.",
+        explicacion: "La teoría de Vroom se enfoca en la motivación, mientras que la teoría de equidad se enfoca en la comparación de recompensas."
+      },
+      {
+        pregunta: "Etapas del conflicto",
+        opciones: [
+          "Incompatibilidad, cognición, intenciones, comportamiento, resultados.",
+          "Solo incompatibilidad y cognición.",
+          "Solo comportamiento y resultados.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Incompatibilidad, cognición, intenciones, comportamiento, resultados.",
+        explicacion: "Las etapas del conflicto incluyen incompatibilidad, cognición, intenciones, comportamiento y resultados."
+      },
+      {
+        pregunta: "Elementos de la cultura organizacional",
+        opciones: [
+          "Valores, ritos, manejo de historia, simbología, mitos.",
+          "Solo valores y ritos.",
+          "Solo simbología y mitos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Valores, ritos, manejo de historia, simbología, mitos.",
+        explicacion: "Los elementos de la cultura organizacional incluyen valores, ritos, manejo de historia, simbología y mitos."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
