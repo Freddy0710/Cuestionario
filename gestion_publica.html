@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión Pública</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #20B2AA, #40E0D0); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "¿Por qué la Ley SAFCO es instrumental y sistémica?",
+        opciones: [
+          "Instrumental: Enfocada en la aplicación práctica. Sistémica: Integra sistemas de administración y control.",
+          "Instrumental: Enfocada en la teoría. Sistémica: Aislada de otros sistemas.",
+          "Instrumental: Enfocada en la política. Sistémica: Solo para empresas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Instrumental: Enfocada en la aplicación práctica. Sistémica: Integra sistemas de administración y control.",
+        explicacion: "La Ley SAFCO es instrumental porque se enfoca en la aplicación práctica, y sistémica porque integra sistemas de administración y control."
+      },
+      {
+        pregunta: "¿Para qué sirve una estructura programática en el sistema de presupuesto?",
+        opciones: [
+          "Permite alcanzar los resultados previstos en el POA.",
+          "Solo para controlar gastos.",
+          "Solo para planificar actividades.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Permite alcanzar los resultados previstos en el POA.",
+        explicacion: "La estructura programática ayuda a alcanzar los resultados planificados en el Plan Operativo Anual (POA)."
+      },
+      {
+        pregunta: "¿Cuál es la razón de la creación de la Ley SAFCO?",
+        opciones: [
+          "Regular los sistemas de administración y control de los recursos del Estado.",
+          "Solo para controlar empresas privadas.",
+          "Solo para gestionar recursos humanos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Regular los sistemas de administración y control de los recursos del Estado.",
+        explicacion: "La Ley SAFCO fue creada para regular la administración y control de los recursos públicos."
+      },
+      {
+        pregunta: "¿En qué casos se aplica el Art. 33 de la Ley 1178?",
+        opciones: [
+          "Cuando una decisión se toma en beneficio de la entidad y no existe responsabilidad administrativa.",
+          "Solo en casos de corrupción.",
+          "Solo en casos de desfalco.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Cuando una decisión se toma en beneficio de la entidad y no existe responsabilidad administrativa.",
+        explicacion: "El Art. 33 se aplica cuando una decisión beneficia a la entidad y no hay responsabilidad administrativa."
+      },
+      {
+        pregunta: "¿Qué es poder?",
+        opciones: [
+          "Capacidad de controlar las acciones de otros.",
+          "Solo la autoridad formal.",
+          "Solo la capacidad de tomar decisiones.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Capacidad de controlar las acciones de otros.",
+        explicacion: "El poder es la capacidad de influir o controlar las acciones de otros."
+      },
+      {
+        pregunta: "¿Qué es control?",
+        opciones: [
+          "Proceso de medición y corrección del desempeño.",
+          "Solo la supervisión de actividades.",
+          "Solo la evaluación de resultados.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Proceso de medición y corrección del desempeño.",
+        explicacion: "El control implica medir y corregir el desempeño para asegurar que se alcancen los objetivos."
+      },
+      {
+        pregunta: "¿Cómo se mide la gestión pública?",
+        opciones: [
+          "Por resultados y cumplimiento de lo planificado.",
+          "Solo por el presupuesto ejecutado.",
+          "Solo por la satisfacción del ciudadano.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Por resultados y cumplimiento de lo planificado.",
+        explicacion: "La gestión pública se mide por los resultados obtenidos y el cumplimiento de lo planificado."
+      },
+      {
+        pregunta: "¿Qué son políticas de gobierno y políticas de estado?",
+        opciones: [
+          "Políticas de gobierno: A corto plazo. Políticas de estado: A largo plazo, trascienden gobiernos.",
+          "Ambas son lo mismo.",
+          "Políticas de gobierno: A largo plazo. Políticas de estado: A corto plazo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Políticas de gobierno: A corto plazo. Políticas de estado: A largo plazo, trascienden gobiernos.",
+        explicacion: "Las políticas de gobierno son a corto plazo, mientras que las políticas de estado son a largo plazo y trascienden gobiernos."
+      },
+      {
+        pregunta: "¿Qué significa la Ley SAFCO?",
+        opciones: [
+          "Ley de Administración y Control Gubernamental.",
+          "Ley de Seguridad Alimentaria.",
+          "Ley de Finanzas Públicas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Ley de Administración y Control Gubernamental.",
+        explicacion: "La Ley SAFCO significa Ley de Administración y Control Gubernamental."
+      },
+      {
+        pregunta: "¿Cuál fue la responsabilidad de Nemecia Achacollo en el caso respiradores?",
+        opciones: [
+          "Responsabilidad civil por daño económico al Estado.",
+          "Responsabilidad penal por corrupción.",
+          "Responsabilidad administrativa por malversación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Responsabilidad civil por daño económico al Estado.",
+        explicacion: "Nemecia Achacollo tuvo responsabilidad civil por el daño económico causado al Estado."
+      },
+      {
+        pregunta: "Diferencia entre malversación y desfalco",
+        opciones: [
+          "Malversación: Uso indebido de fondos públicos. Desfalco: Apropiación indebida de dinero.",
+          "Ambos son lo mismo.",
+          "Malversación: Apropiación indebida de dinero. Desfalco: Uso indebido de fondos públicos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Malversación: Uso indebido de fondos públicos. Desfalco: Apropiación indebida de dinero.",
+        explicacion: "La malversación es el uso indebido de fondos públicos, mientras que el desfalco es la apropiación indebida de dinero."
+      },
+      {
+        pregunta: "Definición de Gobernanza y Gobernabilidad",
+        opciones: [
+          "Gobernanza: Interacciones entre gobernantes y gobernados. Gobernabilidad: Capacidad de gobierno.",
+          "Ambos son lo mismo.",
+          "Gobernanza: Capacidad de gobierno. Gobernabilidad: Interacciones entre gobernantes y gobernados.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Gobernanza: Interacciones entre gobernantes y gobernados. Gobernabilidad: Capacidad de gobierno.",
+        explicacion: "La gobernanza se refiere a las interacciones entre gobernantes y gobernados, mientras que la gobernabilidad es la capacidad de gobierno."
+      },
+      {
+        pregunta: "¿De qué se ocupa el SOA?",
+        opciones: [
+          "Definir y ajustar la estructura organizativa para evitar duplicidad de funciones.",
+          "Solo de la contratación de personal.",
+          "Solo de la evaluación de desempeño.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Definir y ajustar la estructura organizativa para evitar duplicidad de funciones.",
+        explicacion: "El SOA (Sistema de Organización Administrativa) se ocupa de definir y ajustar la estructura organizativa."
+      },
+      {
+        pregunta: "Definición de autocracia",
+        opciones: [
+          "Régimen político donde una persona gobierna sin limitaciones.",
+          "Sistema de gobierno democrático.",
+          "Sistema de gobierno basado en leyes.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Régimen político donde una persona gobierna sin limitaciones.",
+        explicacion: "La autocracia es un régimen político donde una persona gobierna sin restricciones."
+      },
+      {
+        pregunta: "¿La Ley 1178 es solo para empresas?",
+        opciones: [
+          "No, se aplica a todas las entidades del sector público.",
+          "Sí, solo para empresas públicas.",
+          "Sí, solo para empresas privadas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "No, se aplica a todas las entidades del sector público.",
+        explicacion: "La Ley 1178 se aplica a todas las entidades del sector público, no solo a empresas."
+      },
+      {
+        pregunta: "¿Cómo nace un proyecto en la gestión pública?",
+        opciones: [
+          "A partir de un problema, oportunidad o necesidad.",
+          "Solo por decisiones políticas.",
+          "Solo por presupuesto disponible.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "A partir de un problema, oportunidad o necesidad.",
+        explicacion: "Un proyecto en la gestión pública nace para resolver problemas, aprovechar oportunidades o satisfacer necesidades."
+      },
+      {
+        pregunta: "¿Cómo se evalúa un proyecto?",
+        opciones: [
+          "Por sus resultados e impactos.",
+          "Solo por el presupuesto ejecutado.",
+          "Solo por la satisfacción del ciudadano.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Por sus resultados e impactos.",
+        explicacion: "Un proyecto se evalúa por los resultados obtenidos y los impactos generados."
+      },
+      {
+        pregunta: "Diferencia entre gestión pública y administración pública",
+        opciones: [
+          "Gestión pública: Enfoque en resultados y políticas. Administración pública: Enfoque en la ejecución de funciones.",
+          "Ambos son lo mismo.",
+          "Gestión pública: Enfoque en la ejecución de funciones. Administración pública: Enfoque en resultados.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Gestión pública: Enfoque en resultados y políticas. Administración pública: Enfoque en la ejecución de funciones.",
+        explicacion: "La gestión pública se enfoca en resultados y políticas, mientras que la administración pública se enfoca en la ejecución de funciones."
+      },
+      {
+        pregunta: "Concepto de gerencia pública",
+        opciones: [
+          "Persona o grupo que dirige una entidad pública para lograr objetivos.",
+          "Solo la máxima autoridad de una entidad.",
+          "Solo el personal administrativo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Persona o grupo que dirige una entidad pública para lograr objetivos.",
+        explicacion: "La gerencia pública se refiere a quienes dirigen una entidad pública para alcanzar sus objetivos."
+      },
+      {
+        pregunta: "¿Hay burocracia en el país?",
+        opciones: [
+          "Sí, pero no es sólida debido a la falta de estabilidad en los cargos.",
+          "No, no existe burocracia.",
+          "Sí, y es muy eficiente.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Sí, pero no es sólida debido a la falta de estabilidad en los cargos.",
+        explicacion: "Existe burocracia, pero no es sólida debido a la inestabilidad en los cargos públicos."
+      },
+      {
+        pregunta: "¿Cómo se hace un proyecto en gestión pública?",
+        opciones: [
+          "Elaboración (diagnóstico, pronóstico, propuesta). Planeación (planificación, programación). Implementación (ejecución, evaluación).",
+          "Solo con la ejecución.",
+          "Solo con la planificación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Elaboración (diagnóstico, pronóstico, propuesta). Planeación (planificación, programación). Implementación (ejecución, evaluación).",
+        explicacion: "Un proyecto en gestión pública implica elaboración, planeación e implementación."
+      },
+      {
+        pregunta: "Estructura del POA",
+        opciones: [
+          "Objetivos institucionales. Programas, actividades, resultados. Indicadores de evaluación. Presupuesto.",
+          "Solo objetivos y presupuesto.",
+          "Solo programas y actividades.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Objetivos institucionales. Programas, actividades, resultados. Indicadores de evaluación. Presupuesto.",
+        explicacion: "El POA incluye objetivos, programas, actividades, resultados, indicadores y presupuesto."
+      },
+      {
+        pregunta: "Finalidad de las empresas públicas",
+        opciones: [
+          "No son las utilidades, sino los beneficios sociales.",
+          "Solo generar utilidades.",
+          "Solo prestar servicios.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "No son las utilidades, sino los beneficios sociales.",
+        explicacion: "Las empresas públicas buscan beneficios sociales, no solo utilidades."
+      },
+      {
+        pregunta: "Responsabilidades según la Ley 1178",
+        opciones: [
+          "Administrativa, Ejecutiva, Civil, Penal.",
+          "Solo administrativa y penal.",
+          "Solo civil y ejecutiva.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Administrativa, Ejecutiva, Civil, Penal.",
+        explicacion: "La Ley 1178 establece responsabilidades administrativas, ejecutivas, civiles y penales."
+      },
+      {
+        pregunta: "Características del sistema de administración de personal",
+        opciones: [
+          "Dotación de puestos, evaluación de desempeño, movilidad, capacitación.",
+          "Solo dotación de puestos.",
+          "Solo evaluación de desempeño.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Dotación de puestos, evaluación de desempeño, movilidad, capacitación.",
+        explicacion: "El sistema de administración de personal incluye dotación, evaluación, movilidad y capacitación."
+      },
+      {
+        pregunta: "¿Qué es una empresa pública?",
+        opciones: [
+          "Entidad creada por el gobierno para prestar servicios públicos.",
+          "Solo una empresa con fines de lucro.",
+          "Solo una empresa privada.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Entidad creada por el gobierno para prestar servicios públicos.",
+        explicacion: "Una empresa pública es creada por el gobierno para prestar servicios públicos."
+      },
+      {
+        pregunta: "¿Cuál es el sistema más sensible a la corrupción?",
+        opciones: [
+          "SABS (Sistema de Administración de Bienes y Servicios).",
+          "SOA (Sistema de Organización Administrativa).",
+          "SPO (Sistema de Planificación Operativa).",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "SABS (Sistema de Administración de Bienes y Servicios).",
+        explicacion: "El SABS es el sistema más sensible a la corrupción debido a la gestión de bienes y servicios."
+      },
+      {
+        pregunta: "¿Qué es el análisis organizacional?",
+        opciones: [
+          "Retrospectivo: Evaluación de la gestión anterior. Prospectivo: Ajustes para la siguiente gestión.",
+          "Solo evaluación de la gestión anterior.",
+          "Solo ajustes para la siguiente gestión.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Retrospectivo: Evaluación de la gestión anterior. Prospectivo: Ajustes para la siguiente gestión.",
+        explicacion: "El análisis organizacional incluye evaluación retrospectiva y ajustes prospectivos."
+      },
+      {
+        pregunta: "Modalidades de contratación del SABS",
+        opciones: [
+          "Contratación menor, AMPE, licitación pública, contratación por excepción.",
+          "Solo licitación pública.",
+          "Solo contratación menor.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Contratación menor, AMPE, licitación pública, contratación por excepción.",
+        explicacion: "Las modalidades de contratación del SABS incluyen contratación menor, AMPE, licitación pública y contratación por excepción."
+      },
+      {
+        pregunta: "¿Qué es cotización?",
+        opciones: [
+          "Precio referencial determinado por la entidad.",
+          "Solo el precio final de un producto.",
+          "Solo el precio de mercado.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Precio referencial determinado por la entidad.",
+        explicacion: "La cotización es un precio referencial determinado por la entidad para comparar ofertas."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
