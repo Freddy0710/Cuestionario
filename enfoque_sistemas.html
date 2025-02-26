@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enfoque de Sistemas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #20B2AA, #40E0D0); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "¿Qué es un sistema abierto?",
+        opciones: [
+          "Un sistema que intercambia recursos con su entorno.",
+          "Un sistema que no interactúa con su entorno.",
+          "Un sistema que solo funciona en condiciones ideales.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Un sistema que intercambia recursos con su entorno.",
+        explicacion: "Un sistema abierto, como el cuerpo humano, intercambia energía, materia e información con su entorno."
+      },
+      {
+        pregunta: "¿Qué es la homeostasis?",
+        opciones: [
+          "El equilibrio dinámico que mantiene un sistema estable.",
+          "La capacidad de un sistema para crecer indefinidamente.",
+          "La interrupción del funcionamiento de un sistema.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "El equilibrio dinámico que mantiene un sistema estable.",
+        explicacion: "La homeostasis es el equilibrio dinámico que permite a un sistema mantenerse estable a pesar de cambios internos o externos."
+      },
+      {
+        pregunta: "¿Qué es un subsistema?",
+        opciones: [
+          "Una parte de un sistema más grande que tiene funciones específicas.",
+          "Un sistema independiente que no se relaciona con otros.",
+          "Un sistema que solo existe en teoría.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Una parte de un sistema más grande que tiene funciones específicas.",
+        explicacion: "Un subsistema es una parte de un sistema más grande, como una facultad dentro de una universidad."
+      },
+      {
+        pregunta: "¿Qué es la sinergia?",
+        opciones: [
+          "El resultado de trabajar en conjunto, donde el todo es mayor que la suma de las partes.",
+          "La capacidad de un sistema para funcionar de manera aislada.",
+          "La competencia entre subsistemas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "El resultado de trabajar en conjunto, donde el todo es mayor que la suma de las partes.",
+        explicacion: "La sinergia ocurre cuando las partes de un sistema trabajan juntas para producir un resultado superior al que lograrían por separado."
+      },
+      {
+        pregunta: "¿Qué es el principio de equifinalidad?",
+        opciones: [
+          "La capacidad de un sistema para alcanzar objetivos mediante diferentes medios.",
+          "La necesidad de que un sistema siga un único camino para lograr sus objetivos.",
+          "La imposibilidad de un sistema para alcanzar sus objetivos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "La capacidad de un sistema para alcanzar objetivos mediante diferentes medios.",
+        explicacion: "El principio de equifinalidad establece que un sistema puede alcanzar sus objetivos a través de múltiples caminos."
+      },
+      {
+        pregunta: "¿Qué es un sistema cerrado?",
+        opciones: [
+          "Un sistema que no interactúa con su entorno.",
+          "Un sistema que intercambia recursos con su entorno.",
+          "Un sistema que solo existe en teoría.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Un sistema que no interactúa con su entorno.",
+        explicacion: "Un sistema cerrado, como una piedra, no intercambia recursos con su entorno."
+      },
+      {
+        pregunta: "¿Qué es el ambiente en el enfoque de sistemas?",
+        opciones: [
+          "El entorno que rodea y afecta al sistema.",
+          "El sistema en sí mismo.",
+          "La estructura interna de un sistema.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "El entorno que rodea y afecta al sistema.",
+        explicacion: "El ambiente es todo lo que está fuera del sistema y que puede influir en su funcionamiento."
+      },
+      {
+        pregunta: "¿Qué es un proceso de sistema?",
+        opciones: [
+          "Un conjunto de actividades que transforman entradas en salidas.",
+          "La interrupción del funcionamiento de un sistema.",
+          "La capacidad de un sistema para crecer indefinidamente.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Un conjunto de actividades que transforman entradas en salidas.",
+        explicacion: "Un proceso de sistema toma entradas (recursos), las transforma y produce salidas (resultados)."
+      },
+      {
+        pregunta: "¿Qué es la retroalimentación en un sistema?",
+        opciones: [
+          "La información que se devuelve al sistema para ajustar su funcionamiento.",
+          "La interrupción del funcionamiento de un sistema.",
+          "La capacidad de un sistema para crecer indefinidamente.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "La información que se devuelve al sistema para ajustar su funcionamiento.",
+        explicacion: "La retroalimentación permite al sistema corregir errores y mejorar su desempeño."
+      },
+      {
+        pregunta: "¿Qué es un subsistema probabilístico?",
+        opciones: [
+          "Un subsistema con resultados inciertos o impredecibles.",
+          "Un subsistema con resultados predecibles y controlados.",
+          "Un subsistema que no interactúa con otros subsistemas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Un subsistema con resultados inciertos o impredecibles.",
+        explicacion: "Un subsistema probabilístico tiene resultados que no pueden predecirse con certeza."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
