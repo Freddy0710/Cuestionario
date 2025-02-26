@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administración y Organizaciones</title>
+  <title>Administración</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body style="background: linear-gradient(135deg, #1E90FF, #87CEEB);">
   <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
-  <div id="animacion" class="animacion">¡Prepárate!</div>
   <div id="juego" class="juego">
     <div id="pregunta" class="pregunta"></div>
     <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
   </div>
   <div id="resultado" class="resultado"></div>
   <script>
@@ -23,55 +23,16 @@
           "Es un elemento desarrollado en las organizaciones basado en conocimientos acumulados.",
           "Ambas son correctas."
         ],
-        respuesta_correcta: "Ambas son correctas."
+        respuesta_correcta: "Ambas son correctas.",
+        explicacion: "La tecnología es tanto una variable independiente como un elemento desarrollado en las organizaciones."
       },
-      {
-        pregunta: "¿Para qué sirve la organización en la administración?",
-        opciones: [
-          "Establece una estructura y define los roles.",
-          "Agrupa las actividades necesarias para alcanzar objetivos.",
-          "Ambas son correctas."
-        ],
-        respuesta_correcta: "Ambas son correctas."
-      },
-      {
-        pregunta: "Diferencia entre división de trabajo horizontal y vertical",
-        opciones: [
-          "Horizontal: Especialización de actividades en el mismo nivel jerárquico. Vertical: Aumenta los niveles jerárquicos.",
-          "Horizontal: Aumenta los niveles jerárquicos. Vertical: Especialización de actividades.",
-          "No hay diferencia."
-        ],
-        respuesta_correcta: "Horizontal: Especialización de actividades en el mismo nivel jerárquico. Vertical: Aumenta los niveles jerárquicos."
-      },
-      {
-        pregunta: "¿Qué es autoridad y poder?",
-        opciones: [
-          "Poder: Capacidad de imponer la voluntad. Autoridad: Facultad de dirigir.",
-          "Poder: Facultad de dirigir. Autoridad: Capacidad de imponer la voluntad.",
-          "Son lo mismo."
-        ],
-        respuesta_correcta: "Poder: Capacidad de imponer la voluntad. Autoridad: Facultad de dirigir."
-      },
-      {
-        pregunta: "¿Cuáles son los elementos del plan estratégico?",
-        opciones: [
-          "Misión, Visión, Objetivos estratégicos, Políticas.",
-          "Estrategias, Programas, Presupuesto.",
-          "Todas las anteriores."
-        ],
-        respuesta_correcta: "Todas las anteriores."
-      }
       // Añade más preguntas aquí
     ];
 
     let preguntaActual = 0;
     let puntuacion = 0;
-    let tiempo = 5;
-    let temporizador;
 
     function iniciarJuego() {
-      document.getElementById("animacion").style.display = "none";
-      document.getElementById("juego").style.display = "block";
       mostrarPregunta();
     }
 
@@ -82,32 +43,20 @@
         `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
       ).join("");
       document.getElementById("opciones").innerHTML = opcionesHtml;
-      iniciarTemporizador();
-    }
-
-    function iniciarTemporizador() {
-      tiempo = 5;
-      temporizador = setInterval(() => {
-        tiempo--;
-        if (tiempo <= 0) {
-          clearInterval(temporizador);
-          verificarRespuesta(null);
-        }
-      }, 1000);
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
     }
 
     function verificarRespuesta(opcion) {
-      clearInterval(temporizador);
       const pregunta = preguntas[preguntaActual];
       if (opcion === pregunta.respuesta_correcta) {
         puntuacion++;
-        document.getElementById("resultado").textContent = "¡Correcto!";
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
       } else {
-        document.getElementById("resultado").textContent = "Incorrecto :(";
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
       }
       preguntaActual++;
       if (preguntaActual < preguntas.length) {
-        setTimeout(mostrarPregunta, 2000);
+        setTimeout(mostrarPregunta, 3000); // Esperar 3 segundos antes de mostrar la siguiente pregunta
       } else {
         mostrarResultadoFinal();
       }
@@ -129,8 +78,8 @@
       document.getElementById("resultado").textContent = mensaje;
     }
 
-    // Iniciar animación y luego el juego
-    setTimeout(iniciarJuego, 2000);
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
   </script>
 </body>
 </html>
