@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análisis Administrativo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #20B2AA, #40E0D0); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "¿Qué determina la teoría de Ishikawa?",
+        opciones: [
+          "Relación entre un problema (efecto) y sus posibles causas.",
+          "La estructura organizacional de una empresa.",
+          "El ciclo de vida de un producto.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Relación entre un problema (efecto) y sus posibles causas.",
+        explicacion: "La teoría de Ishikawa (diagrama de causa y efecto) identifica la relación entre un problema y sus causas."
+      },
+      {
+        pregunta: "¿Qué es la reingeniería?",
+        opciones: [
+          "Rediseño radical de procesos para mejorar la competitividad y rentabilidad.",
+          "Un análisis financiero de la empresa.",
+          "Un método para reducir costos sin cambiar procesos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Rediseño radical de procesos para mejorar la competitividad y rentabilidad.",
+        explicacion: "La reingeniería implica rediseñar procesos de manera radical para mejorar la eficiencia y rentabilidad."
+      },
+      {
+        pregunta: "¿Cuál es la importancia del análisis administrativo?",
+        opciones: [
+          "Permite identificar y corregir problemas en la estructura y funcionamiento de la organización.",
+          "Solo sirve para reducir costos.",
+          "Es útil solo en momentos de crisis.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Permite identificar y corregir problemas en la estructura y funcionamiento de la organización.",
+        explicacion: "El análisis administrativo es clave para mejorar la eficiencia y resolver problemas organizacionales."
+      },
+      {
+        pregunta: "¿Qué es un problema y cómo se identifica?",
+        opciones: [
+          "Brecha entre la situación actual y la deseada. Se identifica con técnicas como el diagrama de Ishikawa.",
+          "Un error en los procesos financieros.",
+          "Un conflicto entre empleados.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Brecha entre la situación actual y la deseada. Se identifica con técnicas como el diagrama de Ishikawa.",
+        explicacion: "Un problema es la diferencia entre lo que es y lo que debería ser, y se identifica con herramientas como el diagrama de Ishikawa."
+      },
+      {
+        pregunta: "¿Quién puede hacer el análisis administrativo?",
+        opciones: [
+          "Máxima autoridad ejecutiva, consultores, staff.",
+          "Solo el departamento de recursos humanos.",
+          "Solo los gerentes de área.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Máxima autoridad ejecutiva, consultores, staff.",
+        explicacion: "El análisis administrativo puede ser realizado por la alta dirección, consultores externos o el staff interno."
+      },
+      {
+        pregunta: "¿Cada cuánto tiempo se debe hacer el análisis administrativo?",
+        opciones: [
+          "Periódicamente, no solo en momentos de crisis.",
+          "Solo cuando hay problemas financieros.",
+          "Una vez al año.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Periódicamente, no solo en momentos de crisis.",
+        explicacion: "El análisis administrativo debe realizarse de manera periódica para prevenir problemas y mejorar continuamente."
+      },
+      {
+        pregunta: "¿Qué papel cumple el staff en la organización?",
+        opciones: [
+          "Asesoría, monitoreo, servicio, planeación y control.",
+          "Solo ejecutar tareas operativas.",
+          "Solo gestionar recursos financieros.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Asesoría, monitoreo, servicio, planeación y control.",
+        explicacion: "El staff cumple funciones de apoyo, como asesoría, monitoreo y control."
+      },
+      {
+        pregunta: "¿El análisis administrativo es igual al diagnóstico?",
+        opciones: [
+          "No, el análisis es el examen exhaustivo, mientras que el diagnóstico es la conclusión basada en datos.",
+          "Sí, son términos intercambiables.",
+          "El diagnóstico es parte del análisis administrativo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "No, el análisis es el examen exhaustivo, mientras que el diagnóstico es la conclusión basada en datos.",
+        explicacion: "El análisis es el proceso de estudio, mientras que el diagnóstico es el resultado basado en ese análisis."
+      },
+      {
+        pregunta: "¿Qué es el diagnóstico financiero y análisis financiero?",
+        opciones: [
+          "Diagnóstico financiero: Análisis cualitativo. Análisis financiero: Estudio de datos contables.",
+          "Ambos son lo mismo.",
+          "El diagnóstico financiero es cuantitativo y el análisis financiero es cualitativo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Diagnóstico financiero: Análisis cualitativo. Análisis financiero: Estudio de datos contables.",
+        explicacion: "El diagnóstico financiero evalúa cualitativamente la situación, mientras que el análisis financiero estudia datos contables."
+      },
+      {
+        pregunta: "¿Cómo se aplica la sinergia en la administración?",
+        opciones: [
+          "Mediante la coordinación y trabajo en equipo para lograr objetivos comunes.",
+          "Solo en la reducción de costos.",
+          "Solo en la planificación estratégica.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Mediante la coordinación y trabajo en equipo para lograr objetivos comunes.",
+        explicacion: "La sinergia se logra cuando las partes trabajan juntas para obtener resultados superiores."
+      },
+      {
+        pregunta: "¿Cómo influye el ciclo de vida de un producto en el análisis financiero?",
+        opciones: [
+          "Dependiendo de la etapa (introducción, crecimiento, madurez, declive), las ventas y costos varían, afectando la rentabilidad.",
+          "Solo afecta las ventas, no los costos.",
+          "No influye en el análisis financiero.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Dependiendo de la etapa (introducción, crecimiento, madurez, declive), las ventas y costos varían, afectando la rentabilidad.",
+        explicacion: "El ciclo de vida del producto afecta tanto las ventas como los costos, lo que influye en la rentabilidad."
+      },
+      {
+        pregunta: "Herramientas para un análisis a largo plazo",
+        opciones: [
+          "FODA, Balanced Scorecard.",
+          "Solo FODA.",
+          "Solo Balanced Scorecard.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "FODA, Balanced Scorecard.",
+        explicacion: "El FODA y el Balanced Scorecard son herramientas clave para análisis a largo plazo."
+      },
+      {
+        pregunta: "Diferencia entre análisis y diagnóstico",
+        opciones: [
+          "Análisis: Estudio profundo. Diagnóstico: Conclusión basada en datos.",
+          "Ambos son lo mismo.",
+          "El diagnóstico es parte del análisis.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Análisis: Estudio profundo. Diagnóstico: Conclusión basada en datos.",
+        explicacion: "El análisis es el proceso de estudio, mientras que el diagnóstico es la conclusión basada en los datos obtenidos."
+      },
+      {
+        pregunta: "Diferencia entre desarrollo organizacional y desarrollo administrativo",
+        opciones: [
+          "Desarrollo organizacional: Enfoque en cambios culturales y estructurales. Desarrollo administrativo: Enfoque en habilidades y procesos administrativos.",
+          "Ambos son lo mismo.",
+          "El desarrollo administrativo es parte del desarrollo organizacional.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Desarrollo organizacional: Enfoque en cambios culturales y estructurales. Desarrollo administrativo: Enfoque en habilidades y procesos administrativos.",
+        explicacion: "El desarrollo organizacional se enfoca en cambios culturales, mientras que el desarrollo administrativo se enfoca en procesos y habilidades."
+      },
+      {
+        pregunta: "¿Qué es la matriz BCG?",
+        opciones: [
+          "Herramienta para evaluar la rentabilidad de la cartera de productos.",
+          "Un método para reducir costos.",
+          "Una técnica de análisis financiero.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Herramienta para evaluar la rentabilidad de la cartera de productos.",
+        explicacion: "La matriz BCG evalúa la rentabilidad de los productos en función de su participación en el mercado y su crecimiento."
+      },
+      {
+        pregunta: "Diferencia entre análisis administrativo y desarrollo organizacional",
+        opciones: [
+          "Análisis administrativo: Examen de la estructura y funcionamiento. Desarrollo organizacional: Enfoque en cambios culturales y estructurales.",
+          "Ambos son lo mismo.",
+          "El análisis administrativo es parte del desarrollo organizacional.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Análisis administrativo: Examen de la estructura y funcionamiento. Desarrollo organizacional: Enfoque en cambios culturales y estructurales.",
+        explicacion: "El análisis administrativo examina la estructura, mientras que el desarrollo organizacional se enfoca en cambios culturales."
+      },
+      {
+        pregunta: "Criterios para decidir dónde comenzar el análisis administrativo",
+        opciones: [
+          "Tipo de análisis, estructura organizacional, recursos disponibles.",
+          "Solo el tipo de análisis.",
+          "Solo los recursos disponibles.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Tipo de análisis, estructura organizacional, recursos disponibles.",
+        explicacion: "Los criterios incluyen el tipo de análisis, la estructura organizacional y los recursos disponibles."
+      },
+      {
+        pregunta: "¿Usted se considera recurso?",
+        opciones: [
+          "No, las personas son potenciales que contribuyen al funcionamiento de la organización.",
+          "Sí, las personas son recursos.",
+          "Solo los empleados operativos son recursos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "No, las personas son potenciales que contribuyen al funcionamiento de la organización.",
+        explicacion: "Las personas no son recursos, sino potenciales que aportan al funcionamiento de la organización."
+      },
+      {
+        pregunta: "Diferencia entre macro y micro ambiente",
+        opciones: [
+          "Macro ambiente: Factores externos no controlables. Micro ambiente: Factores internos controlables.",
+          "Ambos son lo mismo.",
+          "El micro ambiente incluye factores externos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Macro ambiente: Factores externos no controlables. Micro ambiente: Factores internos controlables.",
+        explicacion: "El macro ambiente incluye factores externos, mientras que el micro ambiente se refiere a factores internos."
+      },
+      {
+        pregunta: "Instrumentos metodológicos para el diagnóstico del problema",
+        opciones: [
+          "Entrevistas, encuestas, observación, talleres, foros.",
+          "Solo entrevistas y encuestas.",
+          "Solo talleres y foros.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Entrevistas, encuestas, observación, talleres, foros.",
+        explicacion: "Estos instrumentos son útiles para recopilar información y diagnosticar problemas."
+      },
+      {
+        pregunta: "¿Qué es análisis administrativo?",
+        opciones: [
+          "Examen exhaustivo de la estructura y funcionamiento de una organización.",
+          "Solo un análisis financiero.",
+          "Solo un análisis de recursos humanos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Examen exhaustivo de la estructura y funcionamiento de una organización.",
+        explicacion: "El análisis administrativo examina la estructura y funcionamiento de una organización."
+      },
+      {
+        pregunta: "Resultados del análisis administrativo",
+        opciones: [
+          "Identificación de problemas y propuestas de solución.",
+          "Solo identificación de problemas.",
+          "Solo propuestas de solución.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Identificación de problemas y propuestas de solución.",
+        explicacion: "El análisis administrativo identifica problemas y propone soluciones."
+      },
+      {
+        pregunta: "Fórmula de la productividad",
+        opciones: [
+          "Productividad = Productos / Insumos.",
+          "Productividad = Ventas / Costos.",
+          "Productividad = Beneficios / Gastos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Productividad = Productos / Insumos.",
+        explicacion: "La productividad se calcula dividiendo los productos obtenidos entre los insumos utilizados."
+      },
+      {
+        pregunta: "¿Qué es el método Kaizen?",
+        opciones: [
+          "Filosofía japonesa de mejora continua basada en pequeños cambios incrementales.",
+          "Un método para reducir costos.",
+          "Una técnica de análisis financiero.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Filosofía japonesa de mejora continua basada en pequeños cambios incrementales.",
+        explicacion: "El método Kaizen se enfoca en la mejora continua mediante pequeños cambios."
+      },
+      {
+        pregunta: "¿Qué es reingeniería?",
+        opciones: [
+          "Rediseño radical de procesos para mejorar la competitividad y rentabilidad.",
+          "Un análisis financiero de la empresa.",
+          "Un método para reducir costos sin cambiar procesos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Rediseño radical de procesos para mejorar la competitividad y rentabilidad.",
+        explicacion: "La reingeniería implica rediseñar procesos de manera radical para mejorar la eficiencia y rentabilidad."
+      },
+      {
+        pregunta: "¿Cuándo se da una reingeniería?",
+        opciones: [
+          "Cuando el rendimiento de la organización está por debajo de la competencia o hay cambios en el mercado.",
+          "Solo cuando hay problemas financieros.",
+          "Solo cuando hay cambios en el mercado.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Cuando el rendimiento de la organización está por debajo de la competencia o hay cambios en el mercado.",
+        explicacion: "La reingeniería se aplica cuando el rendimiento es bajo o hay cambios significativos en el mercado."
+      },
+      {
+        pregunta: "Tipos de análisis administrativos",
+        opciones: [
+          "Acrónico: Análisis general. Sincrónico: Análisis específico de subsistemas. Diacrónico: Análisis de transacciones con el entorno.",
+          "Solo análisis general.",
+          "Solo análisis específico de subsistemas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Acrónico: Análisis general. Sincrónico: Análisis específico de subsistemas. Diacrónico: Análisis de transacciones con el entorno.",
+        explicacion: "Los tipos de análisis administrativos incluyen acrónico, sincrónico y diacrónico."
+      },
+      {
+        pregunta: "Planos que investiga el análisis administrativo",
+        opciones: [
+          "Organizativo-dinámico, Funcional, Estructural, Comportamental.",
+          "Solo organizativo-dinámico.",
+          "Solo funcional y estructural.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Organizativo-dinámico, Funcional, Estructural, Comportamental.",
+        explicacion: "El análisis administrativo investiga los planos organizativo-dinámico, funcional, estructural y comportamental."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
