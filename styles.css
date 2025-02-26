@@ -2,7 +2,6 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background: linear-gradient(135deg, #1E90FF, #87CEEB);
   color: white;
   margin: 0;
   padding: 20px;
@@ -59,7 +58,7 @@ h1 {
 }
 
 .pregunta {
-  font-size: 1.5em;
+  font-size: 1.8em; /* Tamaño de letra aumentado */
   margin: 20px;
 }
 
@@ -70,14 +69,15 @@ h1 {
 }
 
 .opcion {
-  padding: 10px;
-  margin: 5px;
+  padding: 15px;
+  margin: 10px;
   background-color: rgba(255, 255, 255, 0.2);
   color: white;
   cursor: pointer;
   border-radius: 5px;
   width: 80%;
   transition: background-color 0.3s;
+  font-size: 1.2em; /* Tamaño de letra aumentado */
 }
 
 .opcion:hover {
@@ -85,7 +85,7 @@ h1 {
 }
 
 .explicacion {
-  font-size: 1em;
+  font-size: 1.2em; /* Tamaño de letra aumentado */
   margin-top: 20px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.5);
@@ -93,9 +93,29 @@ h1 {
 }
 
 .resultado {
-  font-size: 1.2em;
+  font-size: 1.5em; /* Tamaño de letra aumentado */
   margin-top: 20px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
+}
+
+.navegacion {
+  margin-top: 20px;
+}
+
+.navegacion button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 1.2em;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navegacion button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
 }
