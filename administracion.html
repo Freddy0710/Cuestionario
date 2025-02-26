@@ -15,6 +15,7 @@
     <div class="navegacion">
       <button onclick="preguntaAnterior()">Anterior</button>
       <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
     </div>
   </div>
   <div id="resultado" class="resultado"></div>
@@ -100,6 +101,10 @@
         mensaje += " - ¡Buen trabajo!";
       }
       document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
     }
 
     // Iniciar el juego al cargar la página
