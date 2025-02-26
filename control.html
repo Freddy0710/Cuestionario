@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #FFD700, #FFA500); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "Tipos de control",
+        opciones: [
+          "Producción: Control de calidad, tiempo, mantenimiento. Comercial: Control de ventas, propaganda. Financiero: Control presupuestario, costos. Recursos Humanos: Control de asistencia, salarios.",
+          "Solo control de producción.",
+          "Solo control financiero.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Producción: Control de calidad, tiempo, mantenimiento. Comercial: Control de ventas, propaganda. Financiero: Control presupuestario, costos. Recursos Humanos: Control de asistencia, salarios.",
+        explicacion: "Los tipos de control incluyen producción, comercial, financiero y recursos humanos."
+      },
+      {
+        pregunta: "Definición de control",
+        opciones: [
+          "Medición y corrección del desempeño para garantizar que se cumplan los objetivos.",
+          "Solo medición del desempeño.",
+          "Solo corrección del desempeño.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Medición y corrección del desempeño para garantizar que se cumplan los objetivos.",
+        explicacion: "El control implica medir y corregir el desempeño para garantizar el cumplimiento de los objetivos."
+      },
+      {
+        pregunta: "Fórmula de indicador de eficiencia y eficacia",
+        opciones: [
+          "Eficacia = (Resultado Real / Resultado Estándar) * 100%. Eficiencia = (Resultado Real / Recursos Reales) / (Resultado Estándar / Recursos Estándar) * 100%.",
+          "Eficacia = (Resultado Estándar / Resultado Real) * 100%. Eficiencia = (Recursos Estándar / Recursos Reales) * 100%.",
+          "No hay fórmulas específicas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Eficacia = (Resultado Real / Resultado Estándar) * 100%. Eficiencia = (Resultado Real / Recursos Reales) / (Resultado Estándar / Recursos Estándar) * 100%.",
+        explicacion: "La eficacia mide el cumplimiento de los objetivos, mientras que la eficiencia mide el uso óptimo de los recursos."
+      },
+      {
+        pregunta: "Diagrama de flujo",
+        opciones: [
+          "Representación gráfica de un proceso.",
+          "Solo una lista de tareas.",
+          "Solo un informe financiero.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Representación gráfica de un proceso.",
+        explicacion: "Un diagrama de flujo es una representación gráfica de un proceso."
+      },
+      {
+        pregunta: "Simbología ANSI, ASME, ISO 9000",
+        opciones: [
+          "Normas para la representación de diagramas de flujo.",
+          "Solo normas para la calidad.",
+          "Solo normas para la seguridad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Normas para la representación de diagramas de flujo.",
+        explicacion: "ANSI, ASME e ISO 9000 son normas para la representación de diagramas de flujo."
+      },
+      {
+        pregunta: "Control de variables",
+        opciones: [
+          "Uso de gráficos para vigilar procesos y reducir variabilidad.",
+          "Solo uso de gráficos.",
+          "Solo reducción de variabilidad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Uso de gráficos para vigilar procesos y reducir variabilidad.",
+        explicacion: "El control de variables implica usar gráficos para vigilar procesos y reducir variabilidad."
+      },
+      {
+        pregunta: "Control por atributos",
+        opciones: [
+          "Evaluación de características de calidad con dos situaciones posibles (conforme/no conforme).",
+          "Solo evaluación de características de calidad.",
+          "Solo situaciones conformes.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Evaluación de características de calidad con dos situaciones posibles (conforme/no conforme).",
+        explicacion: "El control por atributos evalúa características de calidad con dos situaciones posibles: conforme o no conforme."
+      },
+      {
+        pregunta: "Control de calidad",
+        opciones: [
+          "Proceso para asegurar que los productos o servicios cumplan con estándares de calidad.",
+          "Solo proceso para productos.",
+          "Solo proceso para servicios.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Proceso para asegurar que los productos o servicios cumplan con estándares de calidad.",
+        explicacion: "El control de calidad asegura que los productos o servicios cumplan con estándares de calidad."
+      },
+      {
+        pregunta: "Evaluación de desempeño",
+        opciones: [
+          "Comparación de resultados con metas establecidas.",
+          "Solo comparación de resultados.",
+          "Solo establecimiento de metas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Comparación de resultados con metas establecidas.",
+        explicacion: "La evaluación de desempeño compara resultados con metas establecidas."
+      },
+      {
+        pregunta: "Diferencia entre control, evaluación y supervisión",
+        opciones: [
+          "Control: Medición y corrección del desempeño. Evaluación: Juicio de valor sobre los resultados. Supervisión: Observación sistemática de actividades.",
+          "Control: Juicio de valor. Evaluación: Observación sistemática. Supervisión: Medición y corrección.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Control: Medición y corrección del desempeño. Evaluación: Juicio de valor sobre los resultados. Supervisión: Observación sistemática de actividades.",
+        explicacion: "El control mide y corrige, la evaluación juzga los resultados, y la supervisión observa actividades."
+      },
+      {
+        pregunta: "Control estratégico",
+        opciones: [
+          "Control de la planificación estratégica para asegurar el cumplimiento de objetivos a largo plazo.",
+          "Solo control de operaciones.",
+          "Solo control financiero.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Control de la planificación estratégica para asegurar el cumplimiento de objetivos a largo plazo.",
+        explicacion: "El control estratégico asegura el cumplimiento de objetivos a largo plazo."
+      },
+      {
+        pregunta: "Fases del control",
+        opciones: [
+          "Establecimiento de estándares, medición, corrección, retroalimentación.",
+          "Solo establecimiento de estándares.",
+          "Solo medición y corrección.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Establecimiento de estándares, medición, corrección, retroalimentación.",
+        explicacion: "Las fases del control incluyen establecimiento de estándares, medición, corrección y retroalimentación."
+      },
+      {
+        pregunta: "Control de prevención, corrección, posterior y retroalimentación",
+        opciones: [
+          "Prevención: Antes de que ocurra el problema. Corrección: Durante la ejecución. Posterior: Después de la ejecución. Retroalimentación: Información para mejorar futuras acciones.",
+          "Solo prevención y corrección.",
+          "Solo posterior y retroalimentación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Prevención: Antes de que ocurra el problema. Corrección: Durante la ejecución. Posterior: Después de la ejecución. Retroalimentación: Información para mejorar futuras acciones.",
+        explicacion: "El control de prevención, corrección, posterior y retroalimentación cubre todas las etapas del proceso."
+      },
+      {
+        pregunta: "Elementos que se deben controlar en los sistemas de administración",
+        opciones: [
+          "Bienes, personas, actividades.",
+          "Solo bienes.",
+          "Solo personas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Bienes, personas, actividades.",
+        explicacion: "Los elementos que se deben controlar incluyen bienes, personas y actividades."
+      },
+      {
+        pregunta: "¿Qué es presupuesto?",
+        opciones: [
+          "Plan de operaciones y recursos para un periodo específico.",
+          "Solo un informe financiero.",
+          "Solo un plan de operaciones.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Plan de operaciones y recursos para un periodo específico.",
+        explicacion: "Un presupuesto es un plan de operaciones y recursos para un periodo específico."
+      },
+      {
+        pregunta: "El presupuesto entra en el POA o POAI",
+        opciones: [
+          "En el POA, ya que es parte del Plan Operativo Anual.",
+          "En el POAI, ya que es parte del Plan Operativo Anual Institucional.",
+          "No entra en ninguno.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "En el POA, ya que es parte del Plan Operativo Anual.",
+        explicacion: "El presupuesto forma parte del POA (Plan Operativo Anual)."
+      },
+      {
+        pregunta: "Ejemplo de control financiero",
+        opciones: [
+          "Análisis de presupuestos, auditorías, análisis de costos.",
+          "Solo análisis de presupuestos.",
+          "Solo auditorías.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Análisis de presupuestos, auditorías, análisis de costos.",
+        explicacion: "El control financiero incluye análisis de presupuestos, auditorías y análisis de costos."
+      },
+      {
+        pregunta: "Principio de equilibrio",
+        opciones: [
+          "Delegación de autoridad y responsabilidad con un control correspondiente.",
+          "Solo delegación de autoridad.",
+          "Solo delegación de responsabilidad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Delegación de autoridad y responsabilidad con un control correspondiente.",
+        explicacion: "El principio de equilibrio implica delegar autoridad y responsabilidad con un control correspondiente."
+      },
+      {
+        pregunta: "¿En qué momento se aplica el control?",
+        opciones: [
+          "En todo momento, mediante controles preliminares, concurrentes y de retroalimentación.",
+          "Solo al final del proceso.",
+          "Solo al inicio del proceso.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "En todo momento, mediante controles preliminares, concurrentes y de retroalimentación.",
+        explicacion: "El control se aplica en todo momento mediante controles preliminares, concurrentes y de retroalimentación."
+      },
+      {
+        pregunta: "Características de un control integrado de gestión",
+        opciones: [
+          "Evaluación de factores críticos, controles formales, prevención de riesgos, uso de técnicas financieras y no financieras.",
+          "Solo evaluación de factores críticos.",
+          "Solo prevención de riesgos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Evaluación de factores críticos, controles formales, prevención de riesgos, uso de técnicas financieras y no financieras.",
+        explicacion: "Un control integrado de gestión evalúa factores críticos, usa controles formales, previene riesgos y emplea técnicas financieras y no financieras."
+      },
+      {
+        pregunta: "Control operacional",
+        opciones: [
+          "Control directo y continuo de los procesos diarios.",
+          "Solo control directo.",
+          "Solo control continuo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Control directo y continuo de los procesos diarios.",
+        explicacion: "El control operacional implica un control directo y continuo de los procesos diarios."
+      },
+      {
+        pregunta: "Diferencia entre retroalimentación y monitoreo",
+        opciones: [
+          "Retroalimentación: Información al final del proceso. Monitoreo: Observación constante durante el proceso.",
+          "Retroalimentación: Observación constante. Monitoreo: Información al final.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Retroalimentación: Información al final del proceso. Monitoreo: Observación constante durante el proceso.",
+        explicacion: "La retroalimentación proporciona información al final del proceso, mientras que el monitoreo es una observación constante."
+      },
+      {
+        pregunta: "¿Por qué el control está vinculado con la planificación?",
+        opciones: [
+          "Porque el control evalúa el cumplimiento de lo planificado.",
+          "Porque el control reemplaza la planificación.",
+          "Porque el control es independiente de la planificación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Porque el control evalúa el cumplimiento de lo planificado.",
+        explicacion: "El control evalúa el cumplimiento de lo planificado, por lo que está vinculado con la planificación."
+      },
+      {
+        pregunta: "Tipos de estándares",
+        opciones: [
+          "De cantidad, calidad, tiempo, costos.",
+          "Solo de cantidad y calidad.",
+          "Solo de tiempo y costos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "De cantidad, calidad, tiempo, costos.",
+        explicacion: "Los estándares pueden ser de cantidad, calidad, tiempo y costos."
+      },
+      {
+        pregunta: "Fallas en el proceso de control",
+        opciones: [
+          "Cacería de brujas, esparcimiento de responsabilidad, obsesión, nostalgia.",
+          "Solo cacería de brujas.",
+          "Solo esparcimiento de responsabilidad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Cacería de brujas, esparcimiento de responsabilidad, obsesión, nostalgia.",
+        explicacion: "Las fallas en el proceso de control incluyen cacería de brujas, esparcimiento de responsabilidad, obsesión y nostalgia."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
