@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión Estratégica</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(135deg, #20B2AA, #40E0D0); color: #000;">
+  <div class="puntaje">Puntuación: <span id="puntuacion">0</span></div>
+  <div id="juego" class="juego">
+    <div id="pregunta" class="pregunta"></div>
+    <div id="opciones" class="opciones"></div>
+    <div id="explicacion" class="explicacion"></div>
+    <div class="navegacion">
+      <button onclick="preguntaAnterior()">Anterior</button>
+      <button onclick="preguntaSiguiente()">Siguiente</button>
+      <button onclick="irAPaginaPrincipal()">Inicio</button>
+    </div>
+  </div>
+  <div id="resultado" class="resultado"></div>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "Definición de estrategia",
+        opciones: [
+          "Conjunto de acciones para lograr un fin en un contexto específico.",
+          "Solo un plan financiero.",
+          "Solo un plan de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Conjunto de acciones para lograr un fin en un contexto específico.",
+        explicacion: "Una estrategia es un conjunto de acciones diseñadas para lograr un objetivo en un contexto específico."
+      },
+      {
+        pregunta: "¿Dónde se usó por primera vez la estrategia?",
+        opciones: [
+          "En el ámbito militar, con autores como Sun Tzu.",
+          "En el ámbito empresarial.",
+          "En el ámbito político.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "En el ámbito militar, con autores como Sun Tzu.",
+        explicacion: "La estrategia se usó por primera vez en el ámbito militar, con autores como Sun Tzu."
+      },
+      {
+        pregunta: "Aplicar las 5 fuerzas de Porter en Amazon",
+        opciones: [
+          "Poder de negociación de proveedores, clientes, amenaza de nuevos competidores, productos sustitutos y rivalidad entre competidores.",
+          "Solo poder de negociación de proveedores y clientes.",
+          "Solo amenaza de nuevos competidores y productos sustitutos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Poder de negociación de proveedores, clientes, amenaza de nuevos competidores, productos sustitutos y rivalidad entre competidores.",
+        explicacion: "Las 5 fuerzas de Porter aplicadas a Amazon incluyen el poder de negociación de proveedores, clientes, amenaza de nuevos competidores, productos sustitutos y rivalidad entre competidores."
+      },
+      {
+        pregunta: "Diferencia entre gestión estratégica, planificación y administración estratégica",
+        opciones: [
+          "Gestión estratégica: Implementación y monitoreo de estrategias. Planificación: Establecimiento de metas y planes. Administración estratégica: Proceso continuo de análisis y toma de decisiones.",
+          "Gestión estratégica: Establecimiento de metas. Planificación: Implementación de estrategias. Administración estratégica: Monitoreo de resultados.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Gestión estratégica: Implementación y monitoreo de estrategias. Planificación: Establecimiento de metas y planes. Administración estratégica: Proceso continuo de análisis y toma de decisiones.",
+        explicacion: "La gestión estratégica se enfoca en la implementación y monitoreo, la planificación en establecer metas, y la administración estratégica en el análisis y toma de decisiones."
+      },
+      {
+        pregunta: "¿Qué es una ventaja competitiva?",
+        opciones: [
+          "Característica que diferencia a una empresa y la coloca en una posición superior frente a la competencia.",
+          "Solo una estrategia de marketing.",
+          "Solo un plan financiero.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Característica que diferencia a una empresa y la coloca en una posición superior frente a la competencia.",
+        explicacion: "Una ventaja competitiva es una característica que diferencia a una empresa y la coloca en una posición superior frente a la competencia."
+      },
+      {
+        pregunta: "¿Para qué sirve una matriz FODA?",
+        opciones: [
+          "Para analizar fortalezas, debilidades, oportunidades y amenazas, y formular estrategias.",
+          "Solo para analizar fortalezas y debilidades.",
+          "Solo para analizar oportunidades y amenazas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Para analizar fortalezas, debilidades, oportunidades y amenazas, y formular estrategias.",
+        explicacion: "La matriz FODA sirve para analizar fortalezas, debilidades, oportunidades y amenazas, y formular estrategias."
+      },
+      {
+        pregunta: "¿Cuándo se da una estrategia de integración horizontal?",
+        opciones: [
+          "Cuando una empresa adquiere o se fusiona con competidores para controlar el mercado.",
+          "Cuando una empresa se expande a nuevos mercados.",
+          "Cuando una empresa reduce su tamaño.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Cuando una empresa adquiere o se fusiona con competidores para controlar el mercado.",
+        explicacion: "Una estrategia de integración horizontal ocurre cuando una empresa adquiere o se fusiona con competidores para controlar el mercado."
+      },
+      {
+        pregunta: "¿Por qué no administración estratégica?",
+        opciones: [
+          "Porque la gestión estratégica se enfoca en la implementación y monitoreo, no solo en la planificación.",
+          "Porque la administración estratégica no existe.",
+          "Porque la gestión estratégica es solo un término alternativo.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Porque la gestión estratégica se enfoca en la implementación y monitoreo, no solo en la planificación.",
+        explicacion: "La gestión estratégica se enfoca en la implementación y monitoreo, no solo en la planificación."
+      },
+      {
+        pregunta: "Características de una misión",
+        opciones: [
+          "Define la razón de ser de la organización, responde a preguntas como qué hacemos, para quién y cómo.",
+          "Solo define los objetivos financieros.",
+          "Solo define los objetivos de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Define la razón de ser de la organización, responde a preguntas como qué hacemos, para quién y cómo.",
+        explicacion: "La misión define la razón de ser de la organización y responde a preguntas como qué hacemos, para quién y cómo."
+      },
+      {
+        pregunta: "¿La gestión estratégica tiene que ver con la globalización?",
+        opciones: [
+          "Sí, ya que busca adaptarse a un entorno globalizado y competitivo.",
+          "No, es independiente de la globalización.",
+          "Solo en algunos casos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Sí, ya que busca adaptarse a un entorno globalizado y competitivo.",
+        explicacion: "La gestión estratégica busca adaptarse a un entorno globalizado y competitivo."
+      },
+      {
+        pregunta: "¿Cómo se mide la gestión de un CEO?",
+        opciones: [
+          "Mediante indicadores de desempeño y resultados obtenidos.",
+          "Solo mediante indicadores financieros.",
+          "Solo mediante la satisfacción del cliente.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Mediante indicadores de desempeño y resultados obtenidos.",
+        explicacion: "La gestión de un CEO se mide mediante indicadores de desempeño y resultados obtenidos."
+      },
+      {
+        pregunta: "¿Cómo se hace una administración pública en la gestión pública?",
+        opciones: [
+          "Mediante la formulación, ejecución y evaluación de políticas y programas.",
+          "Solo mediante la formulación de políticas.",
+          "Solo mediante la ejecución de programas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Mediante la formulación, ejecución y evaluación de políticas y programas.",
+        explicacion: "La administración pública en la gestión pública implica la formulación, ejecución y evaluación de políticas y programas."
+      },
+      {
+        pregunta: "¿Cómo se ve la planificación, organización, control y dirección en el ámbito público?",
+        opciones: [
+          "Como un ciclo constante de planificación, ejecución y evaluación.",
+          "Solo como un proceso lineal.",
+          "Solo como un proceso de control.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Como un ciclo constante de planificación, ejecución y evaluación.",
+        explicacion: "En el ámbito público, la planificación, organización, control y dirección se ven como un ciclo constante de planificación, ejecución y evaluación."
+      },
+      {
+        pregunta: "Diferencia entre gestión y administración pública",
+        opciones: [
+          "Gestión pública: Enfoque en resultados y políticas. Administración pública: Enfoque en la ejecución de funciones y servicios.",
+          "Gestión pública: Enfoque en la ejecución de funciones. Administración pública: Enfoque en resultados.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Gestión pública: Enfoque en resultados y políticas. Administración pública: Enfoque en la ejecución de funciones y servicios.",
+        explicacion: "La gestión pública se enfoca en resultados y políticas, mientras que la administración pública se enfoca en la ejecución de funciones y servicios."
+      },
+      {
+        pregunta: "¿Cómo está organizada la organización pública?",
+        opciones: [
+          "En gobierno central, gobiernos locales, sector paraestatal y sector financiero.",
+          "Solo en gobierno central y gobiernos locales.",
+          "Solo en sector paraestatal y sector financiero.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "En gobierno central, gobiernos locales, sector paraestatal y sector financiero.",
+        explicacion: "La organización pública está organizada en gobierno central, gobiernos locales, sector paraestatal y sector financiero."
+      },
+      {
+        pregunta: "¿Dentro de los sistemas de ejecutar cómo interactúa el SAP?",
+        opciones: [
+          "El SAP (Sistema de Administración de Personal) interactúa con otros sistemas para gestionar recursos humanos.",
+          "El SAP solo gestiona recursos financieros.",
+          "El SAP no interactúa con otros sistemas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "El SAP (Sistema de Administración de Personal) interactúa con otros sistemas para gestionar recursos humanos.",
+        explicacion: "El SAP interactúa con otros sistemas para gestionar recursos humanos."
+      },
+      {
+        pregunta: "¿Qué es control estratégico?",
+        opciones: [
+          "Control de la planificación estratégica para asegurar el cumplimiento de objetivos a largo plazo.",
+          "Solo control de operaciones diarias.",
+          "Solo control financiero.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Control de la planificación estratégica para asegurar el cumplimiento de objetivos a largo plazo.",
+        explicacion: "El control estratégico asegura el cumplimiento de objetivos a largo plazo."
+      },
+      {
+        pregunta: "Diferencia entre análisis financiero y diagnóstico financiero",
+        opciones: [
+          "Análisis financiero: Estudio de datos contables. Diagnóstico financiero: Análisis cualitativo de la situación financiera.",
+          "Análisis financiero: Análisis cualitativo. Diagnóstico financiero: Estudio de datos contables.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Análisis financiero: Estudio de datos contables. Diagnóstico financiero: Análisis cualitativo de la situación financiera.",
+        explicacion: "El análisis financiero estudia datos contables, mientras que el diagnóstico financiero es un análisis cualitativo de la situación financiera."
+      },
+      {
+        pregunta: "¿Qué es el cuadro de control integral?",
+        opciones: [
+          "Herramienta de gestión que mide el desempeño desde perspectivas financieras, de clientes, procesos y aprendizaje.",
+          "Solo una herramienta financiera.",
+          "Solo una herramienta de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Herramienta de gestión que mide el desempeño desde perspectivas financieras, de clientes, procesos y aprendizaje.",
+        explicacion: "El cuadro de control integral mide el desempeño desde perspectivas financieras, de clientes, procesos y aprendizaje."
+      },
+      {
+        pregunta: "¿Qué es un staff y qué hace?",
+        opciones: [
+          "Grupo de asesores que apoyan a la dirección en funciones especializadas.",
+          "Solo un grupo de empleados operativos.",
+          "Solo un grupo de gerentes.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Grupo de asesores que apoyan a la dirección en funciones especializadas.",
+        explicacion: "Un staff es un grupo de asesores que apoyan a la dirección en funciones especializadas."
+      },
+      {
+        pregunta: "¿Qué es un análisis financiero?",
+        opciones: [
+          "Estudio de la información contable para diagnosticar la situación financiera de una empresa.",
+          "Solo un estudio de mercado.",
+          "Solo un estudio de recursos humanos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Estudio de la información contable para diagnosticar la situación financiera de una empresa.",
+        explicacion: "Un análisis financiero estudia la información contable para diagnosticar la situación financiera de una empresa."
+      },
+      {
+        pregunta: "Diferencia entre análisis y control",
+        opciones: [
+          "Análisis: Estudio de datos. Control: Medición y corrección del desempeño.",
+          "Análisis: Medición y corrección. Control: Estudio de datos.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Análisis: Estudio de datos. Control: Medición y corrección del desempeño.",
+        explicacion: "El análisis es el estudio de datos, mientras que el control implica la medición y corrección del desempeño."
+      },
+      {
+        pregunta: "¿Dónde se ve la gestión estratégica en una organización?",
+        opciones: [
+          "En la planificación, ejecución y ventaja competitiva.",
+          "Solo en la planificación.",
+          "Solo en la ejecución.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "En la planificación, ejecución y ventaja competitiva.",
+        explicacion: "La gestión estratégica se ve en la planificación, ejecución y ventaja competitiva."
+      },
+      {
+        pregunta: "¿Qué es un modelo de negocio?",
+        opciones: [
+          "Representación de cómo una empresa crea, entrega y captura valor.",
+          "Solo un plan financiero.",
+          "Solo un plan de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Representación de cómo una empresa crea, entrega y captura valor.",
+        explicacion: "Un modelo de negocio representa cómo una empresa crea, entrega y captura valor."
+      },
+      {
+        pregunta: "¿Qué tipo de estrategia es el Balanced Scorecard?",
+        opciones: [
+          "Estrategia competitiva que integra perspectivas financieras, de clientes, procesos y aprendizaje.",
+          "Solo una estrategia financiera.",
+          "Solo una estrategia de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Estrategia competitiva que integra perspectivas financieras, de clientes, procesos y aprendizaje.",
+        explicacion: "El Balanced Scorecard es una estrategia competitiva que integra perspectivas financieras, de clientes, procesos y aprendizaje."
+      },
+      {
+        pregunta: "¿Qué es táctica y gestión?",
+        opciones: [
+          "Táctica: Acciones específicas para alcanzar objetivos. Gestión: Proceso de planificación, organización, dirección y control.",
+          "Táctica: Planificación. Gestión: Ejecución.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Táctica: Acciones específicas para alcanzar objetivos. Gestión: Proceso de planificación, organización, dirección y control.",
+        explicacion: "La táctica son acciones específicas, mientras que la gestión es el proceso de planificación, organización, dirección y control."
+      },
+      {
+        pregunta: "¿Cómo se manejan las estrategias corporativas?",
+        opciones: [
+          "Mediante estrategias de estabilidad, crecimiento, contracción o combinación.",
+          "Solo mediante estrategias de crecimiento.",
+          "Solo mediante estrategias de contracción.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Mediante estrategias de estabilidad, crecimiento, contracción o combinación.",
+        explicacion: "Las estrategias corporativas se manejan mediante estrategias de estabilidad, crecimiento, contracción o combinación."
+      },
+      {
+        pregunta: "Herramientas para la gestión estratégica",
+        opciones: [
+          "Benchmarking, Downsizing, Joint Venture.",
+          "Solo Benchmarking.",
+          "Solo Joint Venture.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Benchmarking, Downsizing, Joint Venture.",
+        explicacion: "Las herramientas para la gestión estratégica incluyen Benchmarking, Downsizing y Joint Venture."
+      },
+      {
+        pregunta: "¿Qué es valor agregado?",
+        opciones: [
+          "Característica adicional que mejora la percepción del cliente sobre un producto o servicio.",
+          "Solo un aumento en el precio.",
+          "Solo una mejora en la calidad.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Característica adicional que mejora la percepción del cliente sobre un producto o servicio.",
+        explicacion: "El valor agregado es una característica adicional que mejora la percepción del cliente sobre un producto o servicio."
+      },
+      {
+        pregunta: "¿Qué es el modelo de Porter?",
+        opciones: [
+          "Modelo que analiza las cinco fuerzas que determinan la competencia en un sector.",
+          "Solo un modelo financiero.",
+          "Solo un modelo de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Modelo que analiza las cinco fuerzas que determinan la competencia en un sector.",
+        explicacion: "El modelo de Porter analiza las cinco fuerzas que determinan la competencia en un sector."
+      },
+      {
+        pregunta: "Diferencia entre modelo y herramienta",
+        opciones: [
+          "Modelo: Representación de una realidad. Herramienta: Instrumento para ejecutar tareas.",
+          "Modelo: Instrumento para ejecutar tareas. Herramienta: Representación de una realidad.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Modelo: Representación de una realidad. Herramienta: Instrumento para ejecutar tareas.",
+        explicacion: "Un modelo representa una realidad, mientras que una herramienta es un instrumento para ejecutar tareas."
+      },
+      {
+        pregunta: "¿Qué es objetivo estratégico y visión estratégica?",
+        opciones: [
+          "Objetivo estratégico: Meta a largo plazo. Visión estratégica: Imagen futura deseada de la organización.",
+          "Objetivo estratégico: Imagen futura. Visión estratégica: Meta a largo plazo.",
+          "No hay diferencia.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Objetivo estratégico: Meta a largo plazo. Visión estratégica: Imagen futura deseada de la organización.",
+        explicacion: "El objetivo estratégico es una meta a largo plazo, mientras que la visión estratégica es la imagen futura deseada de la organización."
+      },
+      {
+        pregunta: "¿Qué se debe hacer para generar ventaja competitiva?",
+        opciones: [
+          "Identificar competencias básicas, realizar un FODA y desarrollar un plan de gestión estratégica.",
+          "Solo realizar un FODA.",
+          "Solo desarrollar un plan de gestión estratégica.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Identificar competencias básicas, realizar un FODA y desarrollar un plan de gestión estratégica.",
+        explicacion: "Para generar ventaja competitiva, se deben identificar competencias básicas, realizar un FODA y desarrollar un plan de gestión estratégica."
+      },
+      {
+        pregunta: "Finalidad de la gestión estratégica",
+        opciones: [
+          "Dirigir las acciones de la empresa hacia el éxito y la supervivencia a largo plazo.",
+          "Solo dirigir las acciones financieras.",
+          "Solo dirigir las acciones de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Dirigir las acciones de la empresa hacia el éxito y la supervivencia a largo plazo.",
+        explicacion: "La finalidad de la gestión estratégica es dirigir las acciones de la empresa hacia el éxito y la supervivencia a largo plazo."
+      },
+      {
+        pregunta: "¿Qué es la matriz BCG?",
+        opciones: [
+          "Herramienta para evaluar la rentabilidad de la cartera de productos de una empresa.",
+          "Solo una herramienta financiera.",
+          "Solo una herramienta de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Herramienta para evaluar la rentabilidad de la cartera de productos de una empresa.",
+        explicacion: "La matriz BCG es una herramienta para evaluar la rentabilidad de la cartera de productos de una empresa."
+      },
+      {
+        pregunta: "Estrategia de integración social",
+        opciones: [
+          "Participación real y efectiva de personas o grupos en la sociedad.",
+          "Solo participación en actividades comunitarias.",
+          "Solo participación en actividades políticas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Participación real y efectiva de personas o grupos en la sociedad.",
+        explicacion: "La estrategia de integración social implica la participación real y efectiva de personas o grupos en la sociedad."
+      },
+      {
+        pregunta: "Método Delphi",
+        opciones: [
+          "Técnica predictiva basada en la opinión de expertos.",
+          "Solo una técnica financiera.",
+          "Solo una técnica de marketing.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Técnica predictiva basada en la opinión de expertos.",
+        explicacion: "El método Delphi es una técnica predictiva basada en la opinión de expertos."
+      },
+      {
+        pregunta: "Indicadores de la gestión estratégica",
+        opciones: [
+          "Eficacia, eficiencia, impacto, satisfacción, resultados.",
+          "Solo eficacia y eficiencia.",
+          "Solo impacto y satisfacción.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Eficacia, eficiencia, impacto, satisfacción, resultados.",
+        explicacion: "Los indicadores de la gestión estratégica incluyen eficacia, eficiencia, impacto, satisfacción y resultados."
+      },
+      {
+        pregunta: "Fórmula de la gestión estratégica",
+        opciones: [
+          "Visión, misión, valores y plan de acción.",
+          "Solo visión y misión.",
+          "Solo valores y plan de acción.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Visión, misión, valores y plan de acción.",
+        explicacion: "La fórmula de la gestión estratégica incluye visión, misión, valores y plan de acción."
+      },
+      {
+        pregunta: "Elementos de la administración estratégica",
+        opciones: [
+          "Análisis ambiental, formulación de estrategias, implementación, evaluación y control.",
+          "Solo análisis ambiental y formulación de estrategias.",
+          "Solo implementación y evaluación.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Análisis ambiental, formulación de estrategias, implementación, evaluación y control.",
+        explicacion: "Los elementos de la administración estratégica incluyen análisis ambiental, formulación de estrategias, implementación, evaluación y control."
+      },
+      {
+        pregunta: "Beneficios de la administración estratégica",
+        opciones: [
+          "Detección de oportunidades, mejora en la asignación de recursos, adaptación al cambio.",
+          "Solo detección de oportunidades.",
+          "Solo mejora en la asignación de recursos.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Detección de oportunidades, mejora en la asignación de recursos, adaptación al cambio.",
+        explicacion: "Los beneficios de la administración estratégica incluyen detección de oportunidades, mejora en la asignación de recursos y adaptación al cambio."
+      },
+      {
+        pregunta: "Desafíos de la administración estratégica",
+        opciones: [
+          "Amenazas de nuevos competidores, sustitución, poder de negociación, rivalidades.",
+          "Solo amenazas de nuevos competidores.",
+          "Solo poder de negociación y rivalidades.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Amenazas de nuevos competidores, sustitución, poder de negociación, rivalidades.",
+        explicacion: "Los desafíos de la administración estratégica incluyen amenazas de nuevos competidores, sustitución, poder de negociación y rivalidades."
+      },
+      {
+        pregunta: "Tipos de estrategia",
+        opciones: [
+          "Estrategias corporativas, competitivas, funcionales.",
+          "Solo estrategias corporativas.",
+          "Solo estrategias competitivas.",
+          "Ninguna de las anteriores."
+        ],
+        respuesta_correcta: "Estrategias corporativas, competitivas, funcionales.",
+        explicacion: "Los tipos de estrategia incluyen estrategias corporativas, competitivas y funcionales."
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntuacion = 0;
+
+    function iniciarJuego() {
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const pregunta = preguntas[preguntaActual];
+      document.getElementById("pregunta").textContent = pregunta.pregunta;
+      const opcionesHtml = pregunta.opciones.map(opcion => 
+        `<div class="opcion" onclick="verificarRespuesta('${opcion}')">${opcion}</div>`
+      ).join("");
+      document.getElementById("opciones").innerHTML = opcionesHtml;
+      document.getElementById("explicacion").textContent = ""; // Limpiar explicación anterior
+    }
+
+    function verificarRespuesta(opcion) {
+      const pregunta = preguntas[preguntaActual];
+      if (opcion === pregunta.respuesta_correcta) {
+        puntuacion++;
+        document.getElementById("explicacion").textContent = `✅ Correcto: ${pregunta.explicacion}`;
+      } else {
+        document.getElementById("explicacion").textContent = `❌ Incorrecto: ${pregunta.explicacion}`;
+      }
+      actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+      document.getElementById("puntuacion").textContent = puntuacion;
+    }
+
+    function preguntaAnterior() {
+      if (preguntaActual > 0) {
+        preguntaActual--;
+        mostrarPregunta();
+      }
+    }
+
+    function preguntaSiguiente() {
+      if (preguntaActual < preguntas.length - 1) {
+        preguntaActual++;
+        mostrarPregunta();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const porcentaje = (puntuacion / preguntas.length) * 100;
+      let mensaje = `Puntuación final: ${puntuacion}/${preguntas.length} (${porcentaje}%)`;
+      if (porcentaje < 50) {
+        mensaje += " - Sigue estudiando, muchach@.";
+      } else {
+        mensaje += " - ¡Buen trabajo!";
+      }
+      document.getElementById("resultado").textContent = mensaje;
+    }
+
+    function irAPaginaPrincipal() {
+      window.location.href = "index.html";
+    }
+
+    // Iniciar el juego al cargar la página
+    window.onload = iniciarJuego;
+  </script>
+</body>
+</html>
