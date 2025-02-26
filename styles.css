@@ -1,57 +1,52 @@
+/* Estilos generales */
 body {
   font-family: Arial, sans-serif;
   text-align: center;
   background: linear-gradient(135deg, #1E90FF, #87CEEB);
   color: white;
   margin: 0;
-  padding: 0;
+  padding: 20px;
 }
 
+.contenedor {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+/* Estilos para los temas */
 .temas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
   padding: 20px;
 }
 
 .tema {
-  margin: 10px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.1);
   color: white;
   text-decoration: none;
   border-radius: 10px;
-  width: 200px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, background-color 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .tema:hover {
   transform: scale(1.05);
-  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
-.puntaje {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  font-size: 1.2em;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.animacion {
-  font-size: 2em;
-  animation: zoomIn 1s ease-out;
-  margin-top: 20px;
-}
-
-@keyframes zoomIn {
-  0% { transform: scale(0); }
-  100% { transform: scale(1); }
-}
-
+/* Estilos para las páginas de los temas */
 .juego {
   margin-top: 20px;
   background-color: rgba(255, 255, 255, 0.1);
@@ -59,6 +54,8 @@ body {
   border-radius: 10px;
   display: inline-block;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 90%;
 }
 
 .pregunta {
@@ -85,6 +82,14 @@ body {
 
 .opcion:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+.explicacion {
+  font-size: 1em;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
 }
 
 .resultado {
