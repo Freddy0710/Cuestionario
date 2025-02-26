@@ -1,14 +1,23 @@
 const preguntas = [
   {
-    pregunta: "¿Cuál es la capital de Francia?",
-    opciones: ["Madrid", "París", "Berlín", "Roma"],
-    respuesta_correcta: "París"
+    pregunta: "¿Qué es la tecnología?",
+    opciones: [
+      "Es una variable independiente que influye en las características organizacionales.",
+      "Es un elemento desarrollado en las organizaciones basado en conocimientos acumulados.",
+      "Ambas son correctas."
+    ],
+    respuesta_correcta: "Ambas son correctas."
   },
   {
-    pregunta: "¿Quién escribió 'Cien años de soledad'?",
-    opciones: ["Gabriel García Márquez", "Pablo Neruda", "Julio Cortázar", "Mario Vargas Llosa"],
-    respuesta_correcta: "Gabriel García Márquez"
+    pregunta: "¿Para qué sirve la organización en la administración?",
+    opciones: [
+      "Establece una estructura y define los roles.",
+      "Agrupa las actividades necesarias para alcanzar objetivos.",
+      "Ambas son correctas."
+    ],
+    respuesta_correcta: "Ambas son correctas."
   }
+  // Añade más preguntas aquí
 ];
 
 let preguntaActual = 0;
